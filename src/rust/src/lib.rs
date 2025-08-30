@@ -10,8 +10,17 @@ struct RustExTera(Tera);
 
 #[extendr]
 impl RustExTera {
-    fn new() -> RustExTera {
+    fn default() -> RustExTera {
         let tera = Tera::default();
+        RustExTera(tera)
+    }
+
+    fn new(dir: &str) -> RustExTera {
+        let tera = match Tera::new(dir) {
+            Ok(t) => t,
+            Err(e) => throw_r_error(&format!("{}", e)),
+        };
+
         RustExTera(tera)
     }
 
@@ -24,11 +33,7 @@ impl RustExTera {
 
         match self.0.add_raw_templates(template_tuples) {
             Ok(_) => Rbool::true_value(),
-            Err(e) => throw_r_error(&format!(
-                "Could not add templates '{:?}': {}",
-                templates.names().unwrap().collect::<Vec<_>>(),
-                e
-            )),
+            Err(e) => throw_r_error(&format!("{}", e)),
         }
     }
 
@@ -42,11 +47,7 @@ impl RustExTera {
 
         match self.0.add_template_files(template_tuples) {
             Ok(_) => Rbool::true_value(),
-            Err(e) => throw_r_error(&format!(
-                "Could not add templates '{:?}': {}",
-                templates.names().unwrap().collect::<Vec<_>>(),
-                e
-            )),
+            Err(e) => throw_r_error(&format!("{}", e)),
         }
     }
 
@@ -94,10 +95,7 @@ impl RustExTera {
 fn rust_render_template(template: &str, outfile: &str, context_string: &str) -> Rbool {
     let template_content = match fs::read_to_string(template) {
         Ok(content) => content,
-        Err(e) => throw_r_error(&format!(
-            "Could not read template file '{}': {}",
-            template, e
-        )),
+        Err(e) => throw_r_error(&format!("{}", e)),
     };
 
     let mut tera = Tera::default();
@@ -110,17 +108,14 @@ fn rust_render_template(template: &str, outfile: &str, context_string: &str) -> 
 
     let file = match fs::File::create(outfile) {
         Ok(f) => f,
-        Err(e) => throw_r_error(&format!(
-            "Could not create output file '{}': {}",
-            outfile, e
-        )),
+        Err(e) => throw_r_error(&format!("{}", e)),
     };
 
     let mut writer = BufWriter::new(file);
 
     match tera.render_to("template", &context, &mut writer) {
         Ok(_) => Rbool::true_value(),
-        Err(e) => throw_r_error(&format!("Unable to render template to file: {}", e)),
+        Err(e) => throw_r_error(&format!("{}", e)),
     }
 }
 

@@ -17,6 +17,27 @@
 #'
 #' @export
 #' @examples
+#' # initialize ExTera from directory with glob
+#' template_dir <- file.path(tempdir(), "templates")
+#'
+#' dir.create(template_dir)
+#'
+#' tmp <- file.path(
+#'   template_dir,
+#'   "hello-world-template.html"
+#' )
+#'
+#' cat(
+#'   '<p>Hello {{ x }}. This is {{ y }}.</p>',
+#'   file = tmp
+#' )
+#'
+#' glob <- file.path(template_dir, "*.html")
+#'
+#' tera <- ExTera$new(dir = glob)
+#' tera
+#'
+#' # initialize ExTera with empty library
 #' tera <- ExTera$new()
 #'
 #' # from string template
@@ -32,24 +53,13 @@
 #' )
 #'
 #' # from file template
-#' outdir <- tempdir()
-#'
-#' tmp <- file.path(
-#'   outdir,
-#'   "hello-world-template.html"
-#' )
-#'
-#' cat(
-#'   '<p>Hello {{ x }}. This is {{ y }}.</p>',
-#'   file = tmp
-#' )
 #'
 #' tera$add_file_templates(
 #'   "hello-world.html" = tmp
 #' )
 #'
 #' outfile <- file.path(
-#'   outdir,
+#'   template_dir,
 #'   "hello-world-rendered.html"
 #' )
 #'
@@ -67,11 +77,31 @@ ExTera <- R6::R6Class(
   "ExTera",
   public = list(
     #' @description
-    #' Create a new `ExTera` object.
+    #' Create a new `ExTera` object. Will populate template library with files
+    #' in `dir` if specified.
+    #' @param dir character scalar, a glob pattern with `*` wildcards indicating
+    #' a potentially nested directory containing multiple file templates. If
+    #' `NULL` (the default), an `ExTera` with an empty library is initialized.
+    #' See details for more information.
+    #' @details
+    #' The glob pattern `templates/*.html` will match all files with the
+    #' .html extension located directly inside the `templates` folder, while the
+    #' glob pattern `templates/**/*.html` will match all files with the .html
+    #' extension directly inside or in a subdirectory of `templates`. The
+    #' default naming convention is to give each template their full relative
+    #' path from `templates` or whatever the directory is called.
     #' @return
     #' Self (invisibly)
-    initialize = function() {
-      private$extendr <- .catch(RustExTera$new())
+    initialize = function(dir = NULL) {
+      check_string(dir, allow_null = TRUE)
+
+      if (is.null(dir)) {
+        private$extendr <- .catch(RustExTera$default())
+      } else {
+        private$extendr <- .catch(RustExTera$new(dir))
+      }
+
+      invisible(self)
     },
 
     #' @description
@@ -95,7 +125,6 @@ ExTera <- R6::R6Class(
       }
 
       cli::cli_h2("ExTera")
-      cli::cli_text("")
       cli::cli_text("Template library:")
       cli::cli_ul(template_library)
 

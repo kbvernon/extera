@@ -21,6 +21,27 @@ template.
 Templating syntax is described in the \href{https://keats.github.io/tera/docs}{Tera docs}.
 }
 \examples{
+# initialize ExTera from directory with glob
+template_dir <- file.path(tempdir(), "templates")
+
+dir.create(template_dir)
+
+tmp <- file.path(
+  template_dir,
+  "hello-world-template.html"
+)
+
+cat(
+  '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  file = tmp
+)
+
+glob <- file.path(template_dir, "*.html")
+
+tera <- ExTera$new(dir = glob)
+tera
+
+# initialize ExTera with empty library
 tera <- ExTera$new()
 
 # from string template
@@ -36,24 +57,13 @@ tera$render_to_string(
 )
 
 # from file template
-outdir <- tempdir()
-
-tmp <- file.path(
-  outdir,
-  "hello-world-template.html"
-)
-
-cat(
-  '<p>Hello {{ x }}. This is {{ y }}.</p>',
-  file = tmp
-)
 
 tera$add_file_templates(
   "hello-world.html" = tmp
 )
 
 outfile <- file.path(
-  outdir,
+  template_dir,
   "hello-world-rendered.html"
 )
 
@@ -87,9 +97,29 @@ readLines(outfile, warn = FALSE)
 \if{html}{\out{<a id="method-ExTera-new"></a>}}
 \if{latex}{\out{\hypertarget{method-ExTera-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new \code{ExTera} object.
+Create a new \code{ExTera} object. Will populate template library with files
+in \code{dir} if specified.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ExTera$new()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ExTera$new(dir = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{dir}}{character scalar, a glob pattern with \code{*} wildcards indicating
+a potentially nested directory containing multiple file templates. If
+\code{NULL} (the default), an \code{ExTera} with an empty library is initialized.
+See details for more information.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+The glob pattern \verb{templates/*.html} will match all files with the
+.html extension located directly inside the \code{templates} folder, while the
+glob pattern \verb{templates/**/*.html} will match all files with the .html
+extension directly inside or in a subdirectory of \code{templates}. The
+default naming convention is to give each template their full relative
+path from \code{templates} or whatever the directory is called.
 }
 
 \subsection{Returns}{

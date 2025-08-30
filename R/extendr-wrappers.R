@@ -14,7 +14,9 @@ rust_render_template <- function(template, outfile, context_string) .Call(wrap__
 
 RustExTera <- new.env(parent = emptyenv())
 
-RustExTera$new <- function() .Call(wrap__RustExTera__new)
+RustExTera$default <- function() .Call(wrap__RustExTera__default)
+
+RustExTera$new <- function(dir) .Call(wrap__RustExTera__new, dir)
 
 RustExTera$add_string_templates <- function(templates) .Call(wrap__RustExTera__add_string_templates, self, templates)
 
