@@ -69,9 +69,31 @@ template.</p></li>
 <li><p><a href="#method-ExTera-clone"><code>ExTera$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-ExTera-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
-<p>Create a new <code>ExTera</code> object.</p><div class="section">
+<p>Create a new <code>ExTera</code> object. Will populate template library with files
+in <code>dir</code> if specified.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ExTera.html">ExTera</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ExTera.html">ExTera</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>dir</code></dt>
+<dd><p>character scalar, a glob pattern with <code>*</code> wildcards indicating
+a potentially nested directory containing multiple file templates. If
+<code>NULL</code> (the default), an <code>ExTera</code> with an empty library is initialized.
+See details for more information.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<p>The glob pattern <code>templates/*.html</code> will match all files with the
+.html extension located directly inside the <code>templates</code> folder, while the
+glob pattern <code>templates/**/*.html</code> will match all files with the .html
+extension directly inside or in a subdirectory of <code>templates</code>. The
+default naming convention is to give each template their full relative
+path from <code>templates</code> or whatever the directory is called.</p>
 </div>
 
 <div class="section">
@@ -87,7 +109,7 @@ template.</p></li>
 </div>
 
 <div class="section">
-<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n</code></dt>
 <dd><p>integer scalar, number of templates to print (default is 10L)</p></dd>
 
@@ -111,7 +133,7 @@ template.</p></li>
 </div>
 
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>specify list of templates as key-value pairs where key is the
 name of the template and value is the path to the template on file.</p></dd>
@@ -120,7 +142,7 @@ name of the template and value is the path to the template on file.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
 <p>All templates must be named.</p>
 </div>
 
@@ -137,7 +159,7 @@ name of the template and value is the path to the template on file.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>specify list of templates as key-value pairs where key is the
 name of the template and value is a string template.</p></dd>
@@ -146,7 +168,7 @@ name of the template and value is a string template.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
+<h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
 <p>All templates must be named.</p>
 </div>
 
@@ -175,7 +197,7 @@ name of the template and value is a string template.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>template</code></dt>
 <dd><p>character scalar, the name of the template to render.</p></dd>
 
@@ -193,7 +215,7 @@ variable and value is the data to inject.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
+<h4 id="details-4">Details<a class="anchor" aria-label="anchor" href="#details-4"></a></h4>
 <p>All context elements must be named.</p>
 </div>
 
@@ -210,7 +232,7 @@ variable and value is the data to inject.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>template</code></dt>
 <dd><p>character scalar, the name of the template to render.</p></dd>
 
@@ -223,7 +245,7 @@ variable and value is the data to inject.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-4">Details<a class="anchor" aria-label="anchor" href="#details-4"></a></h4>
+<h4 id="details-5">Details<a class="anchor" aria-label="anchor" href="#details-5"></a></h4>
 <p>All context elements must be named.</p>
 </div>
 
@@ -240,7 +262,7 @@ variable and value is the data to inject.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="details-5">Details<a class="anchor" aria-label="anchor" href="#details-5"></a></h4>
+<h4 id="details-6">Details<a class="anchor" aria-label="anchor" href="#details-6"></a></h4>
 <p>Autoescaping is on by default.</p>
 </div>
 
@@ -257,7 +279,7 @@ variable and value is the data to inject.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="details-6">Details<a class="anchor" aria-label="anchor" href="#details-6"></a></h4>
+<h4 id="details-7">Details<a class="anchor" aria-label="anchor" href="#details-7"></a></h4>
 <p>Autoescaping is on by default.</p>
 </div>
 
@@ -274,7 +296,7 @@ variable and value is the data to inject.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -288,7 +310,33 @@ variable and value is the data to inject.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va">ExTera</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># initialize ExTera from directory with glob</span></span></span>
+<span class="r-in"><span><span class="va">template_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"templates"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">template_dir</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">template_dir</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"hello-world-template.html"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">'&lt;p&gt;Hello {{ x }}. This is {{ y }}.&lt;/p&gt;'</span>,</span></span>
+<span class="r-in"><span>  file <span class="op">=</span> <span class="va">tmp</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">glob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">template_dir</span>, <span class="st">"*.html"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va">ExTera</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>dir <span class="op">=</span> <span class="va">glob</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tera</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">ExTera</span> ──</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Template library:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • hello-world-template.html</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># initialize ExTera with empty library</span></span></span>
+<span class="r-in"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va">ExTera</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># from string template</span></span></span>
 <span class="r-in"><span><span class="va">tera</span><span class="op">$</span><span class="fu">add_string_templates</span><span class="op">(</span></span></span>
@@ -307,24 +355,13 @@ variable and value is the data to inject.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># from file template</span></span></span>
-<span class="r-in"><span><span class="va">outdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">outdir</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"hello-world-template.html"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="st">'&lt;p&gt;Hello {{ x }}. This is {{ y }}.&lt;/p&gt;'</span>,</span></span>
-<span class="r-in"><span>  file <span class="op">=</span> <span class="va">tmp</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tera</span><span class="op">$</span><span class="fu">add_file_templates</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="st">"hello-world.html"</span> <span class="op">=</span> <span class="va">tmp</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">outfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">outdir</span>,</span></span>
+<span class="r-in"><span>  <span class="va">template_dir</span>,</span></span>
 <span class="r-in"><span>  <span class="st">"hello-world-rendered.html"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

@@ -57,7 +57,7 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>Everything in <code>extera</code> revolves around the <code>ExTera</code> object.</p>
+<p>Everything in <code>extera</code> revolves around the <code>ExTera</code> object. You can initialize an <code>ExTera</code> with an empty template library simply by calling <code>ExTera$new()</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">extera</span><span class="op">)</span></span>
 <span></span>
@@ -83,8 +83,8 @@
 <span><span class="co">#&gt; ── ExTera ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Template library:</span></span>
-<span><span class="co">#&gt; • star-wars</span></span>
 <span><span class="co">#&gt; • hello-world</span></span>
+<span><span class="co">#&gt; • star-wars</span></span>
 <span></span>
 <span><span class="va">starwars</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="va">starwars</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"films"</span>, <span class="st">"homeworld"</span>, <span class="st">"species"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
@@ -94,6 +94,66 @@
 <span>  people <span class="op">=</span> <span class="va">starwars</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rendered star-wars template:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; &lt;h2&gt;Humans of A New Hope&lt;/h2&gt;</span></span>
+<span><span class="co">#&gt; &lt;ol&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Luke Skywalker (Tatooine)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Darth Vader (Tatooine)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Leia Organa (Alderaan)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Owen Lars (Tatooine)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Beru Whitesun Lars (Tatooine)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Biggs Darklighter (Tatooine)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Obi-Wan Kenobi (Stewjon)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Wilhuff Tarkin (Eriadu)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Han Solo (Corellia)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Wedge Antilles (Corellia)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt;   &lt;li&gt;Raymus Antilles (Alderaan)&lt;/li&gt;</span></span>
+<span><span class="co">#&gt; &lt;/ol&gt;</span></span>
+<span><span class="co">#&gt; </span></span></code></pre></div>
+<p>If you have a complicated directory system with nested templates and inheritance patterns, you may find it easier to initialize an <code>ExTera</code> by specifying the directory with a glob containing the <code>*</code> wildcard to indicate any number of template files.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">template_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"templates"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">template_dir</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">template_dir</span>, <span class="st">"subdirectory"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span></span>
+<span>  <span class="st">'&lt;p&gt;Hello {{ x }}. This is {{ y }}.&lt;/p&gt;'</span>,</span>
+<span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">template_dir</span>, <span class="st">"hello-world.html"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span></span>
+<span>  <span class="st">'&lt;h2&gt;{{ title }}&lt;/h2&gt;</span></span>
+<span><span class="st">&lt;ol&gt;</span></span>
+<span><span class="st">{%- for person in people %}</span></span>
+<span><span class="st">  {%- if person.films is containing("A New Hope") %}</span></span>
+<span><span class="st">  {%- if person.species and person.species is containing("Human") %}</span></span>
+<span><span class="st">  &lt;li&gt;{{ person.name }} ({{ person.homeworld }})&lt;/li&gt;</span></span>
+<span><span class="st">  {%- endif %}</span></span>
+<span><span class="st">  {%- endif %}</span></span>
+<span><span class="st">{%- endfor %}</span></span>
+<span><span class="st">&lt;/ol&gt;</span></span>
+<span><span class="st">'</span>,</span>
+<span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">template_dir</span>, <span class="st">"subdirectory"</span>, <span class="st">"star-wars.html"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">glob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">template_dir</span>, <span class="st">"*.html"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/ExTera.html">ExTera</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">glob</span><span class="op">)</span></span>
+<span><span class="va">tera</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── ExTera ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Template library:</span></span>
+<span><span class="co">#&gt; • hello-world.html</span></span>
+<span><span class="co">#&gt; • subdirectory/star-wars.html</span></span>
+<span></span>
+<span><span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
+<span>  <span class="st">"subdirectory/star-wars.html"</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Humans of A New Hope"</span>,</span>
+<span>  people <span class="op">=</span> <span class="va">starwars</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rendered subdirectory/star-wars.html template:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; &lt;h2&gt;Humans of A New Hope&lt;/h2&gt;</span></span>
 <span><span class="co">#&gt; &lt;ol&gt;</span></span>
