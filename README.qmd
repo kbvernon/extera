@@ -71,7 +71,7 @@ initialize an `ExTera` by specifying the directory with a glob containing the
 `*` wildcard to indicate any number of subfolders and template files. Suppose, 
 for example, that you have a `website` directory that looks like this: 
 
-```{r}
+```{r collapse = FALSE, comment = ""}
 #| label: directory
 #| code-fold: true
 website <- file.path(tempdir(), "website")
@@ -94,7 +94,11 @@ writeLines(
   con = file.path(website, "posts", "blog-template.html")
 )
 
-cat("website", list.files(website, recursive = TRUE), sep = "\n- ")
+cat(
+  "website",
+  list.files(website, recursive = TRUE),
+  sep = "\n- "
+)
 ```
 
 You can generate a new `ExTera` around this directory like so

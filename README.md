@@ -98,14 +98,19 @@ writeLines(
   con = file.path(website, "posts", "blog-template.html")
 )
 
-cat("website", list.files(website, recursive = TRUE), sep = "\n- ")
-#> website
-#> - about-me.html
-#> - index.html
-#> - posts/blog-template.html
+cat(
+  "website",
+  list.files(website, recursive = TRUE),
+  sep = "\n- "
+)
 ```
 
 </details>
+
+    website
+    - about-me.html
+    - index.html
+    - posts/blog-template.html
 
 You can generate a new `ExTera` around this directory like so
 
@@ -117,9 +122,9 @@ tera
 #> ── ExTera ──
 #> 
 #> Template library:
-#> • posts/blog-template.html
 #> • about-me.html
 #> • index.html
+#> • posts/blog-template.html
 ```
 
 ## Rendering basics
@@ -201,8 +206,8 @@ tera
 #> ── ExTera ──
 #> 
 #> Template library:
-#> • posts/blog-template.html
 #> • index.html
+#> • posts/blog-template.html
 #> • star-wars
 #> • about-me.html
 
