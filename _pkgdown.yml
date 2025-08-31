@@ -1,0 +1,7 @@
+url: https://kbvernon.github.io/extera/
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    right:  [github]
