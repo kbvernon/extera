@@ -108,13 +108,17 @@ Code
 <span>  con <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">website</span>, <span class="st">"posts"</span>, <span class="st">"blog-template.html"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"website"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">website</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n- "</span><span class="op">)</span></span>
-<span><span class="co">#&gt; website</span></span>
-<span><span class="co">#&gt; - about-me.html</span></span>
-<span><span class="co">#&gt; - index.html</span></span>
-<span><span class="co">#&gt; - posts/blog-template.html</span></span></code></pre></div>
-</details><p>You can generate a new <code>ExTera</code> around this directory like so</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span></span>
+<span>  <span class="st">"website"</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">website</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"\n- "</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</details><div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>website</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="sc">-</span> about<span class="sc">-</span>me.html</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="sc">-</span> index.html</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="sc">-</span> posts<span class="sc">/</span>blog<span class="sc">-</span>template.html</span></code></pre></div>
+<p>You can generate a new <code>ExTera</code> around this directory like so</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/ExTera.html">ExTera</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">website</span>, <span class="st">"**/*.html"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tera</span></span>
@@ -122,9 +126,9 @@ Code
 <span><span class="co">#&gt; ── ExTera ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Template library:</span></span>
-<span><span class="co">#&gt; • posts/blog-template.html</span></span>
 <span><span class="co">#&gt; • about-me.html</span></span>
-<span><span class="co">#&gt; • index.html</span></span></code></pre></div>
+<span><span class="co">#&gt; • index.html</span></span>
+<span><span class="co">#&gt; • posts/blog-template.html</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="rendering-basics">Rendering basics<a class="anchor" aria-label="anchor" href="#rendering-basics"></a>
@@ -137,7 +141,7 @@ Code
 <code>self$render_to_string()</code> to render to a character string in the current R session.</li>
 </ul>
 <p>For the purposes of demonstration, we use the latter approach, but they both work in the same way. You just have to specify an <code>outfile</code> when rendering to file.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># label: render</span></span>
 <span><span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
 <span>  <span class="st">"posts/blog-template.html"</span>,</span>
@@ -150,7 +154,7 @@ Code
 <span><span class="co">#&gt; &lt;p&gt;Democracy was fun, wasn&amp;#x27;t it?&lt;/p&gt;</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 <p>Did you notice that the apostrophe was converted into the html character entity <code>&amp;#x27;</code>? This is an example of escaping, which <code>tera</code> does by default. You can turn off this behavior using <code>self$autoescape_off()</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tera</span><span class="op">$</span><span class="fu">autoescape_off</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
@@ -169,7 +173,7 @@ Code
 <h2 id="rendering-logic">Rendering logic<a class="anchor" aria-label="anchor" href="#rendering-logic"></a>
 </h2>
 <p>The <code>tera</code> templating engine offers a lot of additional functionality, like control flow and data manipulation. The following example shows how to construct a for-loop, add conditional statements, and apply built-in functions. Notice that <code>{% %}</code> is used to signal these expressions in the template. The use of dashes tells the renderer to remove white space before, <code>{%- %}</code>, or after, <code>{% -%}</code>, the expression.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tera</span><span class="op">$</span><span class="fu">add_string_templates</span><span class="op">(</span></span>
 <span>  <span class="st">"star-wars"</span> <span class="op">=</span> <span class="st">'&lt;h2&gt;{{ title }}&lt;/h2&gt;</span></span>
 <span><span class="st">&lt;ol&gt;</span></span>
@@ -189,8 +193,8 @@ Code
 <span><span class="co">#&gt; ── ExTera ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Template library:</span></span>
-<span><span class="co">#&gt; • posts/blog-template.html</span></span>
 <span><span class="co">#&gt; • index.html</span></span>
+<span><span class="co">#&gt; • posts/blog-template.html</span></span>
 <span><span class="co">#&gt; • star-wars</span></span>
 <span><span class="co">#&gt; • about-me.html</span></span>
 <span></span>
@@ -223,7 +227,7 @@ Code
 <h2 id="inheritance">Inheritance<a class="anchor" aria-label="anchor" href="#inheritance"></a>
 </h2>
 <p>Templates can inherit content from each other in one of two ways, either using <code>include</code> or, for more complicated inheritance, <code>extends</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tera</span><span class="op">$</span><span class="fu">add_string_templates</span><span class="op">(</span></span>
 <span>  <span class="st">"index.html"</span> <span class="op">=</span> <span class="st">'&lt;p&gt;Hello {{ x }}. This is {{ y }}.&lt;/p&gt;</span></span>
 <span><span class="st">&lt;div&gt;</span></span>
@@ -248,7 +252,7 @@ Code
 <span><span class="co">#&gt; &lt;/div&gt;</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 <p>The extension mechanism is a little more involved.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">base_html</span> <span class="op">&lt;-</span> <span class="st">'&lt;body&gt;</span></span>
 <span><span class="st">  &lt;div id="content"&gt;</span></span>
 <span><span class="st">    {% block content %}</span></span>
