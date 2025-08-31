@@ -21,6 +21,15 @@ template.
 Templating syntax is described in the \href{https://keats.github.io/tera/docs}{Tera docs}.
 }
 \examples{
+
+## ------------------------------------------------
+## Method `ExTera$new`
+## ------------------------------------------------
+
+# initialize ExTera with empty library
+tera <- ExTera$new()
+tera
+
 # initialize ExTera from directory with glob
 template_dir <- file.path(tempdir(), "templates")
 
@@ -31,45 +40,77 @@ tmp <- file.path(
   "hello-world-template.html"
 )
 
-cat(
-  '<p>Hello {{ x }}. This is {{ y }}.</p>',
-  file = tmp
+writeLines(
+  text = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  con = tmp
 )
 
-glob <- file.path(template_dir, "*.html")
-
-tera <- ExTera$new(dir = glob)
+tera <- ExTera$new(dir = file.path(template_dir, "*.html"))
 tera
 
-# initialize ExTera with empty library
+## ------------------------------------------------
+## Method `ExTera$add_file_templates`
+## ------------------------------------------------
+
 tera <- ExTera$new()
 
-# from string template
+writeLines(
+  '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  con = file.path(tempdir(), "hello-world.html")
+)
+
+writeLines(
+  '<img src="{{ img_src }}">',
+  con = file.path(tempdir(), "img-src.html")
+)
+
+tera$add_file_templates(
+  "hello-world" = file.path(tempdir(), "hello-world.html"),
+  "img-src" = file.path(tempdir(), "img-src.html")
+)
+
+tera
+
+## ------------------------------------------------
+## Method `ExTera$add_string_templates`
+## ------------------------------------------------
+
+tera <- ExTera$new()
+
+tera$add_string_templates(
+  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  "img-src" = '<img src="{{ img_src }}">'
+)
+
+tera
+
+## ------------------------------------------------
+## Method `ExTera$list_templates`
+## ------------------------------------------------
+
+tera <- ExTera$new()
+
+tera$add_string_templates(
+  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  "img-src" = '<img src="{{ img_src }}">'
+)
+
+tera$list_templates()
+
+## ------------------------------------------------
+## Method `ExTera$render`
+## ------------------------------------------------
+
+tera <- ExTera$new()
+
 tera$add_string_templates(
   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
 )
 
-# to string render
-tera$render_to_string(
+outfile <- file.path(tempdir(), "rendered-hello-world.html")
+
+tera$render(
   "hello-world",
-  x = "world",
-  y = "ExTera"
-)
-
-# from file template
-
-tera$add_file_templates(
-  "hello-world.html" = tmp
-)
-
-outfile <- file.path(
-  template_dir,
-  "hello-world-rendered.html"
-)
-
-# to file render
-tera$render_to_file(
-  "hello-world.html",
   outfile = outfile,
   x = "world",
   y = "ExTera"
@@ -77,6 +118,64 @@ tera$render_to_file(
 
 readLines(outfile, warn = FALSE)
 
+## ------------------------------------------------
+## Method `ExTera$render_to_string`
+## ------------------------------------------------
+
+tera <- ExTera$new()
+
+tera$add_string_templates(
+  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+)
+
+tera$render_to_string(
+  "hello-world",
+  x = "world",
+  y = "ExTera"
+)
+
+## ------------------------------------------------
+## Method `ExTera$autoescape_on`
+## ------------------------------------------------
+
+tera <- ExTera$new()
+
+tera$add_string_templates(
+  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  "hello-world.html" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+)
+
+# not recognized as html
+tera$render_to_string(
+  "hello-world",
+  x = "&world",
+  y = "an apostrophe, '"
+)
+
+# html
+tera$render_to_string(
+  "hello-world.html",
+  x = "&world",
+  y = "an apostrophe, '"
+)
+
+## ------------------------------------------------
+## Method `ExTera$autoescape_off`
+## ------------------------------------------------
+
+tera <- ExTera$new()
+
+tera$add_string_templates(
+  "hello-world.html" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+)
+
+tera$autoescape_off()
+
+tera$render_to_string(
+  "hello-world.html",
+  x = "&world",
+  y = "an apostrophe, '"
+)
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -86,11 +185,10 @@ readLines(outfile, warn = FALSE)
 \item \href{#method-ExTera-add_file_templates}{\code{ExTera$add_file_templates()}}
 \item \href{#method-ExTera-add_string_templates}{\code{ExTera$add_string_templates()}}
 \item \href{#method-ExTera-list_templates}{\code{ExTera$list_templates()}}
-\item \href{#method-ExTera-render_to_file}{\code{ExTera$render_to_file()}}
+\item \href{#method-ExTera-render}{\code{ExTera$render()}}
 \item \href{#method-ExTera-render_to_string}{\code{ExTera$render_to_string()}}
 \item \href{#method-ExTera-autoescape_on}{\code{ExTera$autoescape_on()}}
 \item \href{#method-ExTera-autoescape_off}{\code{ExTera$autoescape_off()}}
-\item \href{#method-ExTera-clone}{\code{ExTera$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -125,6 +223,34 @@ path from \code{templates} or whatever the directory is called.
 \subsection{Returns}{
 Self (invisibly)
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{# initialize ExTera with empty library
+tera <- ExTera$new()
+tera
+
+# initialize ExTera from directory with glob
+template_dir <- file.path(tempdir(), "templates")
+
+dir.create(template_dir)
+
+tmp <- file.path(
+  template_dir,
+  "hello-world-template.html"
+)
+
+writeLines(
+  text = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  con = tmp
+)
+
+tera <- ExTera$new(dir = file.path(template_dir, "*.html"))
+tera
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-print"></a>}}
@@ -172,6 +298,31 @@ All templates must be named.
 \subsection{Returns}{
 Self (invisibly)
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tera <- ExTera$new()
+
+writeLines(
+  '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  con = file.path(tempdir(), "hello-world.html")
+)
+
+writeLines(
+  '<img src="{{ img_src }}">',
+  con = file.path(tempdir(), "img-src.html")
+)
+
+tera$add_file_templates(
+  "hello-world" = file.path(tempdir(), "hello-world.html"),
+  "img-src" = file.path(tempdir(), "img-src.html")
+)
+
+tera
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-add_string_templates"></a>}}
@@ -197,6 +348,21 @@ All templates must be named.
 \subsection{Returns}{
 Self (invisibly)
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tera <- ExTera$new()
+
+tera$add_string_templates(
+  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  "img-src" = '<img src="{{ img_src }}">'
+)
+
+tera
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-list_templates"></a>}}
@@ -210,14 +376,29 @@ List current templates in library.
 \subsection{Returns}{
 NULL (invisibly)
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tera <- ExTera$new()
+
+tera$add_string_templates(
+  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  "img-src" = '<img src="{{ img_src }}">'
+)
+
+tera$list_templates()
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ExTera-render_to_file"></a>}}
-\if{latex}{\out{\hypertarget{method-ExTera-render_to_file}{}}}
-\subsection{Method \code{render_to_file()}}{
+\if{html}{\out{<a id="method-ExTera-render"></a>}}
+\if{latex}{\out{\hypertarget{method-ExTera-render}{}}}
+\subsection{Method \code{render()}}{
 Render specified template to file.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ExTera$render_to_file(template, outfile, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ExTera$render(template, outfile, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -240,6 +421,29 @@ All context elements must be named.
 \subsection{Returns}{
 outfile (invisibly)
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tera <- ExTera$new()
+
+tera$add_string_templates(
+  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+)
+
+outfile <- file.path(tempdir(), "rendered-hello-world.html")
+
+tera$render(
+  "hello-world",
+  outfile = outfile,
+  x = "world",
+  y = "ExTera"
+)
+
+readLines(outfile, warn = FALSE)
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-render_to_string"></a>}}
@@ -267,23 +471,69 @@ All context elements must be named.
 \subsection{Returns}{
 Rendered string with class \code{TeraString} for "pretty" printing.
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tera <- ExTera$new()
+
+tera$add_string_templates(
+  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+)
+
+tera$render_to_string(
+  "hello-world",
+  x = "world",
+  y = "ExTera"
+)
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-autoescape_on"></a>}}
 \if{latex}{\out{\hypertarget{method-ExTera-autoescape_on}{}}}
 \subsection{Method \code{autoescape_on()}}{
-Turn on autoescaping of HTML.
+Turn on autoescaping of HTML. Autoescaping is on by default.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ExTera$autoescape_on()}\if{html}{\out{</div>}}
 }
 
 \subsection{Details}{
-Autoescaping is on by default.
+Autoescaping only applies to templates whose names end with ".html",
+".htm", or ".xml".
 }
 
 \subsection{Returns}{
 Self (invisibly)
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tera <- ExTera$new()
+
+tera$add_string_templates(
+  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  "hello-world.html" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+)
+
+# not recognized as html
+tera$render_to_string(
+  "hello-world",
+  x = "&world",
+  y = "an apostrophe, '"
+)
+
+# html
+tera$render_to_string(
+  "hello-world.html",
+  x = "&world",
+  y = "an apostrophe, '"
+)
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-autoescape_off"></a>}}
@@ -301,22 +551,25 @@ Autoescaping is on by default.
 \subsection{Returns}{
 Self (invisibly)
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ExTera-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-ExTera-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ExTera$clone(deep = FALSE)}\if{html}{\out{</div>}}
-}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tera <- ExTera$new()
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
+tera$add_string_templates(
+  "hello-world.html" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+)
+
+tera$autoescape_off()
+
+tera$render_to_string(
+  "hello-world.html",
+  x = "&world",
+  y = "an apostrophe, '"
+)
 }
 \if{html}{\out{</div>}}
+
 }
+
 }
 }

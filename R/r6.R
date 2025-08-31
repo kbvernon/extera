@@ -16,63 +16,7 @@
 #' Templating syntax is described in the [Tera docs](https://keats.github.io/tera/docs).
 #'
 #' @export
-#' @examples
-#' # initialize ExTera from directory with glob
-#' template_dir <- file.path(tempdir(), "templates")
-#'
-#' dir.create(template_dir)
-#'
-#' tmp <- file.path(
-#'   template_dir,
-#'   "hello-world-template.html"
-#' )
-#'
-#' cat(
-#'   '<p>Hello {{ x }}. This is {{ y }}.</p>',
-#'   file = tmp
-#' )
-#'
-#' glob <- file.path(template_dir, "*.html")
-#'
-#' tera <- ExTera$new(dir = glob)
-#' tera
-#'
-#' # initialize ExTera with empty library
-#' tera <- ExTera$new()
-#'
-#' # from string template
-#' tera$add_string_templates(
-#'   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
-#' )
-#'
-#' # to string render
-#' tera$render_to_string(
-#'   "hello-world",
-#'   x = "world",
-#'   y = "ExTera"
-#' )
-#'
-#' # from file template
-#'
-#' tera$add_file_templates(
-#'   "hello-world.html" = tmp
-#' )
-#'
-#' outfile <- file.path(
-#'   template_dir,
-#'   "hello-world-rendered.html"
-#' )
-#'
-#' # to file render
-#' tera$render_to_file(
-#'   "hello-world.html",
-#'   outfile = outfile,
-#'   x = "world",
-#'   y = "ExTera"
-#' )
-#'
-#' readLines(outfile, warn = FALSE)
-#'
+
 ExTera <- R6::R6Class(
   "ExTera",
   public = list(
@@ -92,6 +36,28 @@ ExTera <- R6::R6Class(
     #' path from `templates` or whatever the directory is called.
     #' @return
     #' Self (invisibly)
+    #' @examples
+    #' # initialize ExTera with empty library
+    #' tera <- ExTera$new()
+    #' tera
+    #'
+    #' # initialize ExTera from directory with glob
+    #' template_dir <- file.path(tempdir(), "templates")
+    #'
+    #' dir.create(template_dir)
+    #'
+    #' tmp <- file.path(
+    #'   template_dir,
+    #'   "hello-world-template.html"
+    #' )
+    #'
+    #' writeLines(
+    #'   text = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+    #'   con = tmp
+    #' )
+    #'
+    #' tera <- ExTera$new(dir = file.path(template_dir, "*.html"))
+    #' tera
     initialize = function(dir = NULL) {
       check_string(dir, allow_null = TRUE)
 
@@ -139,6 +105,25 @@ ExTera <- R6::R6Class(
     #' All templates must be named.
     #' @return
     #' Self (invisibly)
+    #' @examples
+    #' tera <- ExTera$new()
+    #'
+    #' writeLines(
+    #'   '<p>Hello {{ x }}. This is {{ y }}.</p>',
+    #'   con = file.path(tempdir(), "hello-world.html")
+    #' )
+    #'
+    #' writeLines(
+    #'   '<img src="{{ img_src }}">',
+    #'   con = file.path(tempdir(), "img-src.html")
+    #' )
+    #'
+    #' tera$add_file_templates(
+    #'   "hello-world" = file.path(tempdir(), "hello-world.html"),
+    #'   "img-src" = file.path(tempdir(), "img-src.html")
+    #' )
+    #'
+    #' tera
     add_file_templates = function(...) {
       templates <- list2(...)
       check_list_named(templates)
@@ -163,6 +148,15 @@ ExTera <- R6::R6Class(
     #' All templates must be named.
     #' @return
     #' Self (invisibly)
+    #' @examples
+    #' tera <- ExTera$new()
+    #'
+    #' tera$add_string_templates(
+    #'   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+    #'   "img-src" = '<img src="{{ img_src }}">'
+    #' )
+    #'
+    #' tera
     add_string_templates = function(...) {
       templates <- list2(...)
       check_list_named(templates)
@@ -182,6 +176,15 @@ ExTera <- R6::R6Class(
     #' List current templates in library.
     #' @return
     #' NULL (invisibly)
+    #' @examples
+    #' tera <- ExTera$new()
+    #'
+    #' tera$add_string_templates(
+    #'   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+    #'   "img-src" = '<img src="{{ img_src }}">'
+    #' )
+    #'
+    #' tera$list_templates()
     list_templates = function() {
       .catch(private$extendr$list_templates())
       invisible(NULL)
@@ -198,7 +201,24 @@ ExTera <- R6::R6Class(
     #' All context elements must be named.
     #' @return
     #' outfile (invisibly)
-    render_to_file = function(template, outfile, ...) {
+    #' @examples
+    #' tera <- ExTera$new()
+    #'
+    #' tera$add_string_templates(
+    #'   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+    #' )
+    #'
+    #' outfile <- file.path(tempdir(), "rendered-hello-world.html")
+    #'
+    #' tera$render(
+    #'   "hello-world",
+    #'   outfile = outfile,
+    #'   x = "world",
+    #'   y = "ExTera"
+    #' )
+    #'
+    #' readLines(outfile, warn = FALSE)
+    render = function(template, outfile, ...) {
       check_string(template)
       check_string(outfile)
 
@@ -245,6 +265,18 @@ ExTera <- R6::R6Class(
     #' All context elements must be named.
     #' @return
     #' Rendered string with class `TeraString` for "pretty" printing.
+    #' @examples
+    #' tera <- ExTera$new()
+    #'
+    #' tera$add_string_templates(
+    #'   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+    #' )
+    #'
+    #' tera$render_to_string(
+    #'   "hello-world",
+    #'   x = "world",
+    #'   y = "ExTera"
+    #' )
     render_to_string = function(template, ...) {
       check_string(template)
 
@@ -285,11 +317,33 @@ ExTera <- R6::R6Class(
     },
 
     #' @description
-    #' Turn on autoescaping of HTML.
+    #' Turn on autoescaping of HTML. Autoescaping is on by default.
     #' @details
-    #' Autoescaping is on by default.
+    #' Autoescaping only applies to templates whose names end with ".html",
+    #' ".htm", or ".xml".
     #' @return
     #' Self (invisibly)
+    #' @examples
+    #' tera <- ExTera$new()
+    #'
+    #' tera$add_string_templates(
+    #'   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
+    #'   "hello-world.html" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+    #' )
+    #'
+    #' # not recognized as html
+    #' tera$render_to_string(
+    #'   "hello-world",
+    #'   x = "&world",
+    #'   y = "an apostrophe, '"
+    #' )
+    #'
+    #' # html
+    #' tera$render_to_string(
+    #'   "hello-world.html",
+    #'   x = "&world",
+    #'   y = "an apostrophe, '"
+    #' )
     autoescape_on = function() {
       .catch(private$extendr$autoescape_on())
       invisible(self)
@@ -301,6 +355,20 @@ ExTera <- R6::R6Class(
     #' Autoescaping is on by default.
     #' @return
     #' Self (invisibly)
+    #' @examples
+    #' tera <- ExTera$new()
+    #'
+    #' tera$add_string_templates(
+    #'   "hello-world.html" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
+    #' )
+    #'
+    #' tera$autoescape_off()
+    #'
+    #' tera$render_to_string(
+    #'   "hello-world.html",
+    #'   x = "&world",
+    #'   y = "an apostrophe, '"
+    #' )
     autoescape_off = function() {
       .catch(private$extendr$autoescape_off())
       invisible(self)
@@ -308,7 +376,8 @@ ExTera <- R6::R6Class(
   ),
   private = list(
     extendr = NA
-  )
+  ),
+  cloneable = FALSE
 )
 
 #' @export

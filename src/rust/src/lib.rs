@@ -91,34 +91,6 @@ impl RustExTera {
     }
 }
 
-#[extendr]
-fn rust_render_template(template: &str, outfile: &str, context_string: &str) -> Rbool {
-    let template_content = match fs::read_to_string(template) {
-        Ok(content) => content,
-        Err(e) => throw_r_error(&format!("{}", e)),
-    };
-
-    let mut tera = Tera::default();
-
-    if let Err(e) = tera.add_raw_template("template", &template_content) {
-        throw_r_error(&format!("Could not add template: {}", e));
-    }
-
-    let context = to_context(context_string);
-
-    let file = match fs::File::create(outfile) {
-        Ok(f) => f,
-        Err(e) => throw_r_error(&format!("{}", e)),
-    };
-
-    let mut writer = BufWriter::new(file);
-
-    match tera.render_to("template", &context, &mut writer) {
-        Ok(_) => Rbool::true_value(),
-        Err(e) => throw_r_error(&format!("{}", e)),
-    }
-}
-
 fn to_context(x: &str) -> Context {
     let value: Value = match serde_json::from_str(x) {
         Ok(v) => v,
@@ -136,6 +108,5 @@ fn to_context(x: &str) -> Context {
 // See corresponding C code in `entrypoint.c`.
 extendr_module! {
     mod extera;
-    fn rust_render_template;
     impl RustExTera;
 }

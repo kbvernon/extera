@@ -27,7 +27,7 @@ You can install the development version of `extera` like so:
 pak::pak("kbvernon/extera")
 ```
 
-## Example
+## Usage
 
 To get a feel for what `extera` can do, let’s start with a simple “hello
 world” example.
@@ -59,13 +59,16 @@ tera$render_to_string(
 #> 
 ```
 
-There are two things to note here. First, the template syntax uses `{ }`
-to signal variable that can be replaced with data, which should be
-familiar to those who use `glue()`. The second thing to note is the
-object-oriented workflow. Everything in `extera` revolves around the
-`ExTera` object, which serves as a template library with encapsulated
-rendering methods. In the above example, we initialize an `ExTera` with
-an empty template library by calling `ExTera$new()` with no arguments.
+The syntax and API should look pretty familiar to anyone who has used
+`glue` to do something like `glue::glue("Foo { x }", x = "bar")`. The
+big difference is the object-oriented workflow.
+
+## Initializing `ExTera`
+
+Everything in `extera` revolves around the `ExTera` object, which serves
+as a template library with encapsulated rendering methods. In the above
+example, we initialize an `ExTera` with an empty template library by
+calling `ExTera$new()` with no arguments.
 
 If you have a complicated directory system with nested templates and
 inheritance patterns - a common situation for web development, you may
@@ -94,7 +97,11 @@ writeLines(
 )
 
 writeLines(
-  text = '<h2>{{ title }}</h2>\n<p>{{ paragraph }}</p>',
+  text = '<body>
+  <h2>{{ title }}</h2>
+  <p>{{ paragraph }}</p>
+</body>
+',
   con = file.path(website, "posts", "blog-template.html")
 )
 
@@ -122,28 +129,64 @@ tera
 #> ── ExTera ──
 #> 
 #> Template library:
-#> • about-me.html
 #> • index.html
 #> • posts/blog-template.html
+#> • about-me.html
 ```
 
 ## Rendering basics
 
 To render a template, you have to supply a `context`, or a set of
 key-value pairs, with the keys being the variable names - surrounded by
-`{ }` in the template - and their values being the content to inject
-into the template. You can render a template in one of two ways, using
+`{{ variable }}` in the template - and their values being the content to
+inject into the template. You can render a template in one of two ways,
+using
 
-- `self$render_to_file()` to render to a file on disk or
+- `self$render()` to render to a file on disk or
 - `self$render_to_string()` to render to a character string in the
   current R session.
 
-For the purposes of demonstration, we use the latter approach, but they
-both work in the same way. You just have to specify an `outfile` when
-rendering to file.
+Consider our hypothetical website’s blog post template:
+
+<details class="code-fold">
+<summary>Code</summary>
 
 ``` r
-# label: render
+file.path(website, "posts", "blog-template.html") |>
+  readLines() |>
+  cat(sep = "\n")
+```
+
+</details>
+
+    <body>
+      <h2>{{ title }}</h2>
+      <p>{{ paragraph }}</p>
+    </body>
+
+Here are the two ways to render this template.
+
+``` r
+# render to file
+outfile <- file.path(tempdir(), "rendered-blog-post.html")
+
+tera$render(
+  "posts/blog-template.html",
+  outfile = outfile,
+  title = "This is my blog",
+  paragraph = "Democracy was fun, wasn't it?"
+)
+
+cat(
+  readLines(outfile, warn = FALSE),
+  sep = "\n"
+)
+#> <body>
+#>   <h2>This is my blog</h2>
+#>   <p>Democracy was fun, wasn&#x27;t it?</p>
+#> </body>
+
+# render to string
 tera$render_to_string(
   "posts/blog-template.html",
   title = "This is my blog",
@@ -151,8 +194,11 @@ tera$render_to_string(
 )
 #> Rendered posts/blog-template.html template:
 #> 
-#> <h2>This is my blog</h2>
-#> <p>Democracy was fun, wasn&#x27;t it?</p>
+#> <body>
+#>   <h2>This is my blog</h2>
+#>   <p>Democracy was fun, wasn&#x27;t it?</p>
+#> </body>
+#> 
 #> 
 ```
 
@@ -170,8 +216,11 @@ tera$render_to_string(
 )
 #> Rendered posts/blog-template.html template:
 #> 
-#> <h2>This is my blog</h2>
-#> <p>Democracy was fun, wasn't it?</p>
+#> <body>
+#>   <h2>This is my blog</h2>
+#>   <p>Democracy was fun, wasn't it?</p>
+#> </body>
+#> 
 #> 
 ```
 
@@ -182,9 +231,10 @@ And then turn it back on with `self$autoescape_on()`.
 The `tera` templating engine offers a lot of additional functionality,
 like control flow and data manipulation. The following example shows how
 to construct a for-loop, add conditional statements, and apply built-in
-functions. Notice that `{% %}` is used to signal these expressions in
-the template. The use of dashes tells the renderer to remove white space
-before, `{%- %}`, or after, `{% -%}`, the expression.
+functions. Notice that `{% expression %}` is used to signal these
+expressions in the template. The use of dashes tells the renderer to
+remove white space before (`{%- expression %}`) or after
+(`{% expression -%}`) the expression.
 
 ``` r
 tera$add_string_templates(
@@ -200,16 +250,6 @@ tera$add_string_templates(
 </ol>
 '
 )
-
-tera
-#> 
-#> ── ExTera ──
-#> 
-#> Template library:
-#> • index.html
-#> • posts/blog-template.html
-#> • star-wars
-#> • about-me.html
 
 starwars <- dplyr::starwars[c("name", "films", "homeworld", "species")]
 
@@ -237,6 +277,101 @@ tera$render_to_string(
 #> 
 ```
 
+## Context format
+
+In that for-loop, you may have noticed that we used dot-indexing syntax,
+e.g., `person.name`. If `person` was a list in R, this would be
+equivalent to `person[["name"]]`. This usage suggests that the context
+should have a specific format, like a named list. In fact, the `tera`
+templating engine generally expects data to be in, let’s say, a
+JSON-like format. The biggest way this affects data structures coming
+from R is in the way that data.frames are handled. In R, tables are
+column-major, but the JSON-like format that `tera` wants is row-major or
+“record” oriented.
+
+The way `extera` handles this is by serializing all R data structures
+added to the context as JSON using `yyjsonr`. This is not ideal, but it
+is relatively safe. It also enforces a specific data model that users
+should be able to reason about fairly well. Oh, and `yyjsonr` is very,
+very fast, so performance issues are minor.
+
+It may help to see an example of what that looks like. This applies the
+same filters we used in our template above.
+
+``` r
+starwars[["in_a_new_hope"]] <- sapply(
+  starwars[["films"]],
+  \(x) "A New Hope" %in% x
+)
+
+starwars <- subset(
+  starwars,
+  in_a_new_hope & !is.na(species) & species == "Human",
+  select = c(name, homeworld)
+)
+
+json_str <- yyjsonr::write_json_str(
+  list(
+    title = "Humans of A New Hope",
+    people = starwars
+  ),
+  pretty = TRUE
+)
+
+cat(json_str)
+#> {
+#>   "title": [
+#>     "Humans of A New Hope"
+#>   ],
+#>   "people": [
+#>     {
+#>       "name": "Luke Skywalker",
+#>       "homeworld": "Tatooine"
+#>     },
+#>     {
+#>       "name": "Darth Vader",
+#>       "homeworld": "Tatooine"
+#>     },
+#>     {
+#>       "name": "Leia Organa",
+#>       "homeworld": "Alderaan"
+#>     },
+#>     {
+#>       "name": "Owen Lars",
+#>       "homeworld": "Tatooine"
+#>     },
+#>     {
+#>       "name": "Beru Whitesun Lars",
+#>       "homeworld": "Tatooine"
+#>     },
+#>     {
+#>       "name": "Biggs Darklighter",
+#>       "homeworld": "Tatooine"
+#>     },
+#>     {
+#>       "name": "Obi-Wan Kenobi",
+#>       "homeworld": "Stewjon"
+#>     },
+#>     {
+#>       "name": "Wilhuff Tarkin",
+#>       "homeworld": "Eriadu"
+#>     },
+#>     {
+#>       "name": "Han Solo",
+#>       "homeworld": "Corellia"
+#>     },
+#>     {
+#>       "name": "Wedge Antilles",
+#>       "homeworld": "Corellia"
+#>     },
+#>     {
+#>       "name": "Raymus Antilles",
+#>       "homeworld": "Alderaan"
+#>     }
+#>   ]
+#> }
+```
+
 ## Inheritance
 
 Templates can inherit content from each other in one of two ways, either
@@ -262,13 +397,20 @@ tera$render_to_string(
 #> 
 #> <p>Hello world. This is ExTera.</p>
 #> <div>
-#> <h2>My blog post</h2>
-#> <p>The Book of Bokonon tells us...</p>
+#> <body>
+#>   <h2>My blog post</h2>
+#>   <p>The Book of Bokonon tells us...</p>
+#> </body>
+#> 
 #> </div>
 #> 
 ```
 
-The extension mechanism is a little more involved.
+The extension mechanism is a little more involved, required that you
+specify content blocks where content from a child document should be
+injected. In the following example, we define a single block called
+`content` in the base or parent template and specify what it includes in
+the child template.
 
 ``` r
 base_html <- '<body>

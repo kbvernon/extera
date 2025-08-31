@@ -10,8 +10,6 @@
 #' @useDynLib extera, .registration = TRUE
 NULL
 
-rust_render_template <- function(template, outfile, context_string) .Call(wrap__rust_render_template, template, outfile, context_string)
-
 RustExTera <- new.env(parent = emptyenv())
 
 RustExTera$default <- function() .Call(wrap__RustExTera__default)
