@@ -12,7 +12,7 @@ status](https://www.r-pkg.org/badges/version/extera.png)](https://CRAN.R-project
 [![extendr](https://img.shields.io/badge/extendr-%5E0.8.0-276DC2)](https://extendr.github.io/extendr/extendr_api/)
 <!-- badges: end -->
 
-The name `extera` is a portmandeau of `extendr` and `tera`, making it
+The name `extera` is a portmanteau of `extendr` and `tera`, making it
 suggestive of the package’s intended purpose, which is to provide an
 [`extendr`](https://github.com/extendr/extendr)-powered R wrapper around
 the blazing fast [`tera`](https://github.com/Keats/tera)
@@ -129,9 +129,9 @@ tera
 #> ── ExTera ──
 #> 
 #> Template library:
+#> • about-me.html
 #> • index.html
 #> • posts/blog-template.html
-#> • about-me.html
 ```
 
 ## Rendering basics
@@ -406,7 +406,7 @@ tera$render_to_string(
 #> 
 ```
 
-The extension mechanism is a little more involved, required that you
+The extension mechanism is a little more involved, requiring that you
 specify content blocks where content from a child document should be
 injected. In the following example, we define a single block called
 `content` in the base or parent template and specify what it includes in
