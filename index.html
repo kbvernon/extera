@@ -45,7 +45,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The name <code>extera</code> is a portmandeau of <code>extendr</code> and <code>tera</code>, making it suggestive of the package’s intended purpose, which is to provide an <a href="https://github.com/extendr/extendr" class="external-link"><code>extendr</code></a>-powered R wrapper around the blazing fast <a href="https://github.com/Keats/tera" class="external-link"><code>tera</code></a> templating-engine in Rust.</p>
+<p>The name <code>extera</code> is a portmanteau of <code>extendr</code> and <code>tera</code>, making it suggestive of the package’s intended purpose, which is to provide an <a href="https://github.com/extendr/extendr" class="external-link"><code>extendr</code></a>-powered R wrapper around the blazing fast <a href="https://github.com/Keats/tera" class="external-link"><code>tera</code></a> templating-engine in Rust.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -136,9 +136,9 @@ Code
 <span><span class="co">#&gt; ── ExTera ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Template library:</span></span>
+<span><span class="co">#&gt; • about-me.html</span></span>
 <span><span class="co">#&gt; • index.html</span></span>
-<span><span class="co">#&gt; • posts/blog-template.html</span></span>
-<span><span class="co">#&gt; • about-me.html</span></span></code></pre></div>
+<span><span class="co">#&gt; • posts/blog-template.html</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="rendering-basics">Rendering basics<a class="anchor" aria-label="anchor" href="#rendering-basics"></a>
@@ -369,7 +369,7 @@ Code
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; &lt;/div&gt;</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
-<p>The extension mechanism is a little more involved, required that you specify content blocks where content from a child document should be injected. In the following example, we define a single block called <code>content</code> in the base or parent template and specify what it includes in the child template.</p>
+<p>The extension mechanism is a little more involved, requiring that you specify content blocks where content from a child document should be injected. In the following example, we define a single block called <code>content</code> in the base or parent template and specify what it includes in the child template.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">base_html</span> <span class="op">&lt;-</span> <span class="st">'&lt;body&gt;</span></span>
 <span><span class="st">  &lt;div id="content"&gt;</span></span>
