@@ -305,14 +305,13 @@ json_str <- yyjsonr::write_json_str(
     title = "Humans of A New Hope",
     people = starwars
   ),
+  auto_unbox = TRUE,
   pretty = TRUE
 )
 
 cat(json_str)
 #> {
-#>   "title": [
-#>     "Humans of A New Hope"
-#>   ],
+#>   "title": "Humans of A New Hope",
 #>   "people": [
 #>     {
 #>       "name": "Luke Skywalker",
