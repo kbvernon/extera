@@ -79,10 +79,7 @@
 <span>  x <span class="op">=</span> <span class="st">"world"</span>,</span>
 <span>  y <span class="op">=</span> <span class="st">"ExTera"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rendered hello-world template:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; &lt;p&gt;Hello world. This is ExTera.&lt;/p&gt;</span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "&lt;p&gt;Hello world. This is ExTera.&lt;/p&gt;"</span></span></code></pre></div>
 <p>The syntax and API should look pretty familiar to anyone who has used <code>glue</code> to do something like <code>glue::glue("Foo { x }", x = "bar")</code>. The big difference is the object-oriented workflow.</p>
 </div>
 <div class="section level2">
@@ -113,8 +110,7 @@ Code
 <span>  text <span class="op">=</span> <span class="st">'&lt;body&gt;</span></span>
 <span><span class="st">  &lt;h2&gt;{{ title }}&lt;/h2&gt;</span></span>
 <span><span class="st">  &lt;p&gt;{{ paragraph }}&lt;/p&gt;</span></span>
-<span><span class="st">&lt;/body&gt;</span></span>
-<span><span class="st">'</span>,</span>
+<span><span class="st">&lt;/body&gt;'</span>,</span>
 <span>  con <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">website</span>, <span class="st">"posts"</span>, <span class="st">"blog-template.html"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -137,8 +133,8 @@ Code
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Template library:</span></span>
 <span><span class="co">#&gt; • about-me.html</span></span>
-<span><span class="co">#&gt; • index.html</span></span>
-<span><span class="co">#&gt; • posts/blog-template.html</span></span></code></pre></div>
+<span><span class="co">#&gt; • posts/blog-template.html</span></span>
+<span><span class="co">#&gt; • index.html</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="rendering-basics">Rendering basics<a class="anchor" aria-label="anchor" href="#rendering-basics"></a>
@@ -183,36 +179,32 @@ Code
 <span><span class="co">#&gt; &lt;/body&gt;</span></span>
 <span></span>
 <span><span class="co"># render to string</span></span>
-<span><span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
+<span><span class="va">string</span> <span class="op">&lt;-</span> <span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
 <span>  <span class="st">"posts/blog-template.html"</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"This is my blog"</span>,</span>
 <span>  paragraph <span class="op">=</span> <span class="st">"Democracy was fun, wasn't it?"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rendered posts/blog-template.html template:</span></span>
-<span><span class="co">#&gt; </span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;body&gt;</span></span>
 <span><span class="co">#&gt;   &lt;h2&gt;This is my blog&lt;/h2&gt;</span></span>
 <span><span class="co">#&gt;   &lt;p&gt;Democracy was fun, wasn&amp;#x27;t it?&lt;/p&gt;</span></span>
-<span><span class="co">#&gt; &lt;/body&gt;</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;/body&gt;</span></span></code></pre></div>
 <p>Did you notice that the apostrophe was converted into the html character entity <code>&amp;#x27;</code>? This is an example of escaping, which <code>tera</code> does by default. You can turn off this behavior using <code>self$autoescape_off()</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tera</span><span class="op">$</span><span class="fu">autoescape_off</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
+<span><span class="va">string</span> <span class="op">&lt;-</span> <span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
 <span>  <span class="st">"posts/blog-template.html"</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"This is my blog"</span>,</span>
 <span>  paragraph <span class="op">=</span> <span class="st">"Democracy was fun, wasn't it?"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rendered posts/blog-template.html template:</span></span>
-<span><span class="co">#&gt; </span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;body&gt;</span></span>
 <span><span class="co">#&gt;   &lt;h2&gt;This is my blog&lt;/h2&gt;</span></span>
 <span><span class="co">#&gt;   &lt;p&gt;Democracy was fun, wasn't it?&lt;/p&gt;</span></span>
-<span><span class="co">#&gt; &lt;/body&gt;</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;/body&gt;</span></span></code></pre></div>
 <p>And then turn it back on with <code>self$autoescape_on()</code>.</p>
 </div>
 <div class="section level2">
@@ -230,19 +222,18 @@ Code
 <span><span class="st">  {%- endif %}</span></span>
 <span><span class="st">  {%- endif %}</span></span>
 <span><span class="st">{%- endfor %}</span></span>
-<span><span class="st">&lt;/ol&gt;</span></span>
-<span><span class="st">'</span></span>
+<span><span class="st">&lt;/ol&gt;'</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">starwars</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="va">starwars</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"films"</span>, <span class="st">"homeworld"</span>, <span class="st">"species"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
-<span><span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
+<span><span class="va">string</span> <span class="op">&lt;-</span> <span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
 <span>  <span class="st">"star-wars"</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Humans of A New Hope"</span>,</span>
 <span>  people <span class="op">=</span> <span class="va">starwars</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rendered star-wars template:</span></span>
-<span><span class="co">#&gt; </span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;h2&gt;Humans of A New Hope&lt;/h2&gt;</span></span>
 <span><span class="co">#&gt; &lt;ol&gt;</span></span>
 <span><span class="co">#&gt;   &lt;li&gt;Luke Skywalker (Tatooine)&lt;/li&gt;</span></span>
@@ -256,8 +247,7 @@ Code
 <span><span class="co">#&gt;   &lt;li&gt;Han Solo (Corellia)&lt;/li&gt;</span></span>
 <span><span class="co">#&gt;   &lt;li&gt;Wedge Antilles (Corellia)&lt;/li&gt;</span></span>
 <span><span class="co">#&gt;   &lt;li&gt;Raymus Antilles (Alderaan)&lt;/li&gt;</span></span>
-<span><span class="co">#&gt; &lt;/ol&gt;</span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;/ol&gt;</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="context-format">Context format<a class="anchor" aria-label="anchor" href="#context-format"></a>
@@ -347,28 +337,25 @@ Code
 <span>  <span class="st">"index.html"</span> <span class="op">=</span> <span class="st">'&lt;p&gt;Hello {{ x }}. This is {{ y }}.&lt;/p&gt;</span></span>
 <span><span class="st">&lt;div&gt;</span></span>
 <span><span class="st">{% include "posts/blog-template.html" -%}</span></span>
-<span><span class="st">&lt;/div&gt;</span></span>
-<span><span class="st">'</span></span>
+<span><span class="st">&lt;/div&gt;'</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
+<span><span class="va">string</span> <span class="op">&lt;-</span> <span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
 <span>  <span class="st">"index.html"</span>,</span>
 <span>  x <span class="op">=</span> <span class="st">"world"</span>,</span>
 <span>  y <span class="op">=</span> <span class="st">"ExTera"</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"My blog post"</span>,</span>
 <span>  paragraph <span class="op">=</span> <span class="st">"The Book of Bokonon tells us..."</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rendered index.html template:</span></span>
-<span><span class="co">#&gt; </span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;p&gt;Hello world. This is ExTera.&lt;/p&gt;</span></span>
 <span><span class="co">#&gt; &lt;div&gt;</span></span>
 <span><span class="co">#&gt; &lt;body&gt;</span></span>
 <span><span class="co">#&gt;   &lt;h2&gt;My blog post&lt;/h2&gt;</span></span>
 <span><span class="co">#&gt;   &lt;p&gt;The Book of Bokonon tells us...&lt;/p&gt;</span></span>
 <span><span class="co">#&gt; &lt;/body&gt;</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; &lt;/div&gt;</span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;/div&gt;</span></span></code></pre></div>
 <p>The extension mechanism is a little more involved, requiring that you specify content blocks where content from a child document should be injected. In the following example, we define a single block called <code>content</code> in the base or parent template and specify what it includes in the child template.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">base_html</span> <span class="op">&lt;-</span> <span class="st">'&lt;body&gt;</span></span>
@@ -376,37 +363,32 @@ Code
 <span><span class="st">    {% block content %}</span></span>
 <span><span class="st">    {% endblock content %}</span></span>
 <span><span class="st">  &lt;/div&gt;</span></span>
-<span><span class="st">&lt;/body&gt;</span></span>
-<span><span class="st">'</span></span>
+<span><span class="st">&lt;/body&gt;'</span></span>
 <span></span>
 <span><span class="va">child_html</span> <span class="op">&lt;-</span> <span class="st">'{% extends "base.html" %}</span></span>
-<span><span class="st">{%- block content %}</span></span>
+<span><span class="st">{%- block content -%}</span></span>
 <span><span class="st">  &lt;h1&gt;{{ title }}&lt;/h1&gt;</span></span>
 <span><span class="st">  &lt;p&gt;{{ paragraph }}&lt;/p&gt;</span></span>
-<span><span class="st">{% endblock content -%}</span></span>
-<span><span class="st">'</span></span>
+<span><span class="st">{%- endblock content -%}'</span></span>
 <span></span>
 <span><span class="va">tera</span><span class="op">$</span><span class="fu">add_string_templates</span><span class="op">(</span></span>
 <span>  <span class="st">"base.html"</span> <span class="op">=</span> <span class="va">base_html</span>,</span>
 <span>  <span class="st">"child.html"</span> <span class="op">=</span> <span class="va">child_html</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
+<span><span class="va">string</span> <span class="op">&lt;-</span> <span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span>
 <span>  <span class="st">"child.html"</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Index"</span>,</span>
 <span>  paragraph <span class="op">=</span> <span class="st">"Welcome to my homepage."</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rendered child.html template:</span></span>
-<span><span class="co">#&gt; </span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;body&gt;</span></span>
 <span><span class="co">#&gt;   &lt;div id="content"&gt;</span></span>
-<span><span class="co">#&gt;     </span></span>
-<span><span class="co">#&gt;   &lt;h1&gt;Index&lt;/h1&gt;</span></span>
+<span><span class="co">#&gt;     &lt;h1&gt;Index&lt;/h1&gt;</span></span>
 <span><span class="co">#&gt;   &lt;p&gt;Welcome to my homepage.&lt;/p&gt;</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   &lt;/div&gt;</span></span>
-<span><span class="co">#&gt; &lt;/body&gt;</span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;/body&gt;</span></span></code></pre></div>
 <p>For more details, check out the <a href="https://keats.github.io/tera/docs/" class="external-link">documentation</a> for <code>tera</code>.</p>
 </div>
 </div>
