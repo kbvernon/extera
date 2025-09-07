@@ -2,7 +2,6 @@
 
 S3method("$",RustExTera)
 S3method("[[",RustExTera)
-S3method(print,TeraString)
 export(ExTera)
 export(render_template)
 import(R6)

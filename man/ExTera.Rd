@@ -21,9 +21,8 @@ template.
 Templating syntax is described in the \href{https://keats.github.io/tera/docs}{Tera docs}.
 }
 \examples{
-
 ## ------------------------------------------------
-## Method `ExTera$new`
+## Method `ExTera$new()`
 ## ------------------------------------------------
 
 # initialize ExTera with empty library
@@ -49,7 +48,7 @@ tera <- ExTera$new(dir = file.path(template_dir, "*.html"))
 tera
 
 ## ------------------------------------------------
-## Method `ExTera$add_file_templates`
+## Method `ExTera$add_file_templates()`
 ## ------------------------------------------------
 
 tera <- ExTera$new()
@@ -72,7 +71,7 @@ tera$add_file_templates(
 tera
 
 ## ------------------------------------------------
-## Method `ExTera$add_string_templates`
+## Method `ExTera$add_string_templates()`
 ## ------------------------------------------------
 
 tera <- ExTera$new()
@@ -85,7 +84,7 @@ tera$add_string_templates(
 tera
 
 ## ------------------------------------------------
-## Method `ExTera$list_templates`
+## Method `ExTera$list_templates()`
 ## ------------------------------------------------
 
 tera <- ExTera$new()
@@ -98,7 +97,7 @@ tera$add_string_templates(
 tera$list_templates()
 
 ## ------------------------------------------------
-## Method `ExTera$render`
+## Method `ExTera$render()`
 ## ------------------------------------------------
 
 tera <- ExTera$new()
@@ -119,7 +118,7 @@ tera$render(
 readLines(outfile, warn = FALSE)
 
 ## ------------------------------------------------
-## Method `ExTera$render_to_string`
+## Method `ExTera$render_to_string()`
 ## ------------------------------------------------
 
 tera <- ExTera$new()
@@ -135,7 +134,7 @@ tera$render_to_string(
 )
 
 ## ------------------------------------------------
-## Method `ExTera$autoescape_on`
+## Method `ExTera$autoescape_on()`
 ## ------------------------------------------------
 
 tera <- ExTera$new()
@@ -160,7 +159,7 @@ tera$render_to_string(
 )
 
 ## ------------------------------------------------
-## Method `ExTera$autoescape_off`
+## Method `ExTera$autoescape_off()`
 ## ------------------------------------------------
 
 tera <- ExTera$new()
@@ -223,34 +222,6 @@ path from \code{templates} or whatever the directory is called.
 \subsection{Returns}{
 Self (invisibly)
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{# initialize ExTera with empty library
-tera <- ExTera$new()
-tera
-
-# initialize ExTera from directory with glob
-template_dir <- file.path(tempdir(), "templates")
-
-dir.create(template_dir)
-
-tmp <- file.path(
-  template_dir,
-  "hello-world-template.html"
-)
-
-writeLines(
-  text = '<p>Hello {{ x }}. This is {{ y }}.</p>',
-  con = tmp
-)
-
-tera <- ExTera$new(dir = file.path(template_dir, "*.html"))
-tera
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-print"></a>}}
@@ -298,31 +269,6 @@ All templates must be named.
 \subsection{Returns}{
 Self (invisibly)
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{tera <- ExTera$new()
-
-writeLines(
-  '<p>Hello {{ x }}. This is {{ y }}.</p>',
-  con = file.path(tempdir(), "hello-world.html")
-)
-
-writeLines(
-  '<img src="{{ img_src }}">',
-  con = file.path(tempdir(), "img-src.html")
-)
-
-tera$add_file_templates(
-  "hello-world" = file.path(tempdir(), "hello-world.html"),
-  "img-src" = file.path(tempdir(), "img-src.html")
-)
-
-tera
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-add_string_templates"></a>}}
@@ -348,21 +294,6 @@ All templates must be named.
 \subsection{Returns}{
 Self (invisibly)
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{tera <- ExTera$new()
-
-tera$add_string_templates(
-  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
-  "img-src" = '<img src="{{ img_src }}">'
-)
-
-tera
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-list_templates"></a>}}
@@ -376,21 +307,6 @@ List current templates in library.
 \subsection{Returns}{
 NULL (invisibly)
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{tera <- ExTera$new()
-
-tera$add_string_templates(
-  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
-  "img-src" = '<img src="{{ img_src }}">'
-)
-
-tera$list_templates()
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-render"></a>}}
@@ -421,29 +337,6 @@ All context elements must be named.
 \subsection{Returns}{
 outfile (invisibly)
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{tera <- ExTera$new()
-
-tera$add_string_templates(
-  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
-)
-
-outfile <- file.path(tempdir(), "rendered-hello-world.html")
-
-tera$render(
-  "hello-world",
-  outfile = outfile,
-  x = "world",
-  y = "ExTera"
-)
-
-readLines(outfile, warn = FALSE)
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-render_to_string"></a>}}
@@ -471,24 +364,6 @@ All context elements must be named.
 \subsection{Returns}{
 Rendered string with class \code{TeraString} for "pretty" printing.
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{tera <- ExTera$new()
-
-tera$add_string_templates(
-  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
-)
-
-tera$render_to_string(
-  "hello-world",
-  x = "world",
-  y = "ExTera"
-)
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-autoescape_on"></a>}}
@@ -507,33 +382,6 @@ Autoescaping only applies to templates whose names end with ".html",
 \subsection{Returns}{
 Self (invisibly)
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{tera <- ExTera$new()
-
-tera$add_string_templates(
-  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>',
-  "hello-world.html" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
-)
-
-# not recognized as html
-tera$render_to_string(
-  "hello-world",
-  x = "&world",
-  y = "an apostrophe, '"
-)
-
-# html
-tera$render_to_string(
-  "hello-world.html",
-  x = "&world",
-  y = "an apostrophe, '"
-)
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExTera-autoescape_off"></a>}}
@@ -551,25 +399,5 @@ Autoescaping is on by default.
 \subsection{Returns}{
 Self (invisibly)
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{tera <- ExTera$new()
-
-tera$add_string_templates(
-  "hello-world.html" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
-)
-
-tera$autoescape_off()
-
-tera$render_to_string(
-  "hello-world.html",
-  x = "&world",
-  y = "an apostrophe, '"
-)
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 }
