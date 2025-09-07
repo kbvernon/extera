@@ -53,10 +53,7 @@ tera$render_to_string(
   x = "world",
   y = "ExTera"
 )
-#> Rendered hello-world template:
-#> 
-#> <p>Hello world. This is ExTera.</p>
-#> 
+#> [1] "<p>Hello world. This is ExTera.</p>"
 ```
 
 The syntax and API should look pretty familiar to anyone who has used
@@ -100,8 +97,7 @@ writeLines(
   text = '<body>
   <h2>{{ title }}</h2>
   <p>{{ paragraph }}</p>
-</body>
-',
+</body>',
   con = file.path(website, "posts", "blog-template.html")
 )
 
@@ -130,8 +126,8 @@ tera
 #> 
 #> Template library:
 #> • about-me.html
-#> • index.html
 #> • posts/blog-template.html
+#> • index.html
 ```
 
 ## Rendering basics
@@ -187,19 +183,17 @@ cat(
 #> </body>
 
 # render to string
-tera$render_to_string(
+string <- tera$render_to_string(
   "posts/blog-template.html",
   title = "This is my blog",
   paragraph = "Democracy was fun, wasn't it?"
 )
-#> Rendered posts/blog-template.html template:
-#> 
+
+cat(string)
 #> <body>
 #>   <h2>This is my blog</h2>
 #>   <p>Democracy was fun, wasn&#x27;t it?</p>
 #> </body>
-#> 
-#> 
 ```
 
 Did you notice that the apostrophe was converted into the html character
@@ -209,19 +203,17 @@ default. You can turn off this behavior using `self$autoescape_off()`.
 ``` r
 tera$autoescape_off()
 
-tera$render_to_string(
+string <- tera$render_to_string(
   "posts/blog-template.html",
   title = "This is my blog",
   paragraph = "Democracy was fun, wasn't it?"
 )
-#> Rendered posts/blog-template.html template:
-#> 
+
+cat(string)
 #> <body>
 #>   <h2>This is my blog</h2>
 #>   <p>Democracy was fun, wasn't it?</p>
 #> </body>
-#> 
-#> 
 ```
 
 And then turn it back on with `self$autoescape_on()`.
@@ -247,19 +239,18 @@ tera$add_string_templates(
   {%- endif %}
   {%- endif %}
 {%- endfor %}
-</ol>
-'
+</ol>'
 )
 
 starwars <- dplyr::starwars[c("name", "films", "homeworld", "species")]
 
-tera$render_to_string(
+string <- tera$render_to_string(
   "star-wars",
   title = "Humans of A New Hope",
   people = starwars
 )
-#> Rendered star-wars template:
-#> 
+
+cat(string)
 #> <h2>Humans of A New Hope</h2>
 #> <ol>
 #>   <li>Luke Skywalker (Tatooine)</li>
@@ -274,7 +265,6 @@ tera$render_to_string(
 #>   <li>Wedge Antilles (Corellia)</li>
 #>   <li>Raymus Antilles (Alderaan)</li>
 #> </ol>
-#> 
 ```
 
 ## Context format
@@ -382,28 +372,25 @@ tera$add_string_templates(
   "index.html" = '<p>Hello {{ x }}. This is {{ y }}.</p>
 <div>
 {% include "posts/blog-template.html" -%}
-</div>
-'
+</div>'
 )
 
-tera$render_to_string(
+string <- tera$render_to_string(
   "index.html",
   x = "world",
   y = "ExTera",
   title = "My blog post",
   paragraph = "The Book of Bokonon tells us..."
 )
-#> Rendered index.html template:
-#> 
+
+cat(string)
 #> <p>Hello world. This is ExTera.</p>
 #> <div>
 #> <body>
 #>   <h2>My blog post</h2>
 #>   <p>The Book of Bokonon tells us...</p>
 #> </body>
-#> 
 #> </div>
-#> 
 ```
 
 The extension mechanism is a little more involved, requiring that you
@@ -418,37 +405,32 @@ base_html <- '<body>
     {% block content %}
     {% endblock content %}
   </div>
-</body>
-'
+</body>'
 
 child_html <- '{% extends "base.html" %}
-{%- block content %}
+{%- block content -%}
   <h1>{{ title }}</h1>
   <p>{{ paragraph }}</p>
-{% endblock content -%}
-'
+{%- endblock content -%}'
 
 tera$add_string_templates(
   "base.html" = base_html,
   "child.html" = child_html
 )
 
-tera$render_to_string(
+string <- tera$render_to_string(
   "child.html",
   title = "Index",
   paragraph = "Welcome to my homepage."
 )
-#> Rendered child.html template:
-#> 
+
+cat(string)
 #> <body>
 #>   <div id="content">
-#>     
-#>   <h1>Index</h1>
+#>     <h1>Index</h1>
 #>   <p>Welcome to my homepage.</p>
-#> 
 #>   </div>
 #> </body>
-#> 
 ```
 
 For more details, check out the

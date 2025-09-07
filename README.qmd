@@ -96,8 +96,7 @@ writeLines(
   text = '<body>
   <h2>{{ title }}</h2>
   <p>{{ paragraph }}</p>
-</body>
-',
+</body>',
   con = file.path(website, "posts", "blog-template.html")
 )
 
@@ -158,11 +157,13 @@ cat(
 )
 
 # render to string
-tera$render_to_string(
+string <- tera$render_to_string(
   "posts/blog-template.html",
   title = "This is my blog",
   paragraph = "Democracy was fun, wasn't it?"
 )
+
+cat(string)
 ```
 
 Did you notice that the apostrophe was converted into the html character entity
@@ -173,11 +174,13 @@ turn off this behavior using `self$autoescape_off()`.
 #| label: autoescape
 tera$autoescape_off()
 
-tera$render_to_string(
+string <- tera$render_to_string(
   "posts/blog-template.html",
   title = "This is my blog",
   paragraph = "Democracy was fun, wasn't it?"
 )
+
+cat(string)
 ```
 
 And then turn it back on with `self$autoescape_on()`.
@@ -203,17 +206,18 @@ tera$add_string_templates(
   {%- endif %}
   {%- endif %}
 {%- endfor %}
-</ol>
-'
+</ol>'
 )
 
 starwars <- dplyr::starwars[c("name", "films", "homeworld", "species")]
 
-tera$render_to_string(
+string <- tera$render_to_string(
   "star-wars",
   title = "Humans of A New Hope",
   people = starwars
 )
+
+cat(string)
 ```
 
 ## Context format
@@ -271,17 +275,18 @@ tera$add_string_templates(
   "index.html" = '<p>Hello {{ x }}. This is {{ y }}.</p>
 <div>
 {% include "posts/blog-template.html" -%}
-</div>
-'
+</div>'
 )
 
-tera$render_to_string(
+string <- tera$render_to_string(
   "index.html",
   x = "world",
   y = "ExTera",
   title = "My blog post",
   paragraph = "The Book of Bokonon tells us..."
 )
+
+cat(string)
 ```
 
 The extension mechanism is a little more involved, requiring that you specify
@@ -296,26 +301,26 @@ base_html <- '<body>
     {% block content %}
     {% endblock content %}
   </div>
-</body>
-'
+</body>'
 
 child_html <- '{% extends "base.html" %}
-{%- block content %}
+{%- block content -%}
   <h1>{{ title }}</h1>
   <p>{{ paragraph }}</p>
-{% endblock content -%}
-'
+{%- endblock content -%}'
 
 tera$add_string_templates(
   "base.html" = base_html,
   "child.html" = child_html
 )
 
-tera$render_to_string(
+string <- tera$render_to_string(
   "child.html",
   title = "Index",
   paragraph = "Welcome to my homepage."
 )
+
+cat(string)
 ```
 
 For more details, check out the 
