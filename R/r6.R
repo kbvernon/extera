@@ -194,7 +194,7 @@ ExTera <- R6::R6Class(
     initialize = function(dir = NULL) {
       check_string(dir, allow_null = TRUE)
 
-      if (is.null(dir)) {
+      if (rlang::is_null(dir)) {
         private$extendr <- .catch(RustExTera$default())
       } else {
         private$extendr <- .catch(RustExTera$new(dir))
@@ -246,7 +246,7 @@ ExTera <- R6::R6Class(
     #' @return
     #' Self (invisibly)
     add_file_templates = function(...) {
-      templates <- list2(...)
+      templates <- rlang::list2(...)
       check_list_named(templates)
       check_files_exist(templates)
 
@@ -270,7 +270,7 @@ ExTera <- R6::R6Class(
     #' @return
     #' Self (invisibly)
     add_string_templates = function(...) {
-      templates <- list2(...)
+      templates <- rlang::list2(...)
       check_list_named(templates)
 
       added_templates <- .catch(
@@ -316,7 +316,7 @@ ExTera <- R6::R6Class(
         ))
       }
 
-      context <- list2(...)
+      context <- rlang::list2(...)
       check_list_named(context)
 
       context_string <- yyjsonr::write_json_str(
@@ -362,7 +362,7 @@ ExTera <- R6::R6Class(
         ))
       }
 
-      context <- list2(...)
+      context <- rlang::list2(...)
       check_list_named(context)
 
       context_string <- yyjsonr::write_json_str(

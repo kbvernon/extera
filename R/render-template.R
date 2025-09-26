@@ -62,9 +62,9 @@ render_template <- function(path, outfile = NULL, ...) {
 
   template_name <- basename(path)
 
-  tera$add_file_templates(!!template_name := path)
+  tera$add_file_templates(!!!rlang::set_names(path, template_name))
 
-  if (is.null(outfile)) {
+  if (rlang::is_null(outfile)) {
     return(tera$render_to_string(template_name, ...))
   } else {
     return(tera$render(template_name, outfile = outfile, ...))
