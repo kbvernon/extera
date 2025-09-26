@@ -6,6 +6,7 @@
 ^src/Makevars$
 ^src/Makevars\.win$
 ^\.vscode$
+^\.git$
 ^\.github$
 ^_pkgdown\.yml$
 ^docs$
