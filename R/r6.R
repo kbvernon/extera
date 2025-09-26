@@ -213,6 +213,7 @@ ExTera <- R6::R6Class(
       check_number_whole(n)
 
       template_library <- .catch(private$extendr$list_templates())
+      template_library <- sort(template_library)
 
       if (length(template_library) > n) {
         overflow <- sprintf(
@@ -223,9 +224,15 @@ ExTera <- R6::R6Class(
         template_library <- c(template_library[seq_len(n)], overflow)
       }
 
+      remove_vertical_space <- list(
+        h2 = list("margin-top" = 0, "margin-bottom" = 0)
+      )
+
+      cli::cli_div(theme = remove_vertical_space)
       cli::cli_h2("ExTera")
       cli::cli_text("Template library:")
       cli::cli_ul(template_library)
+      cli::cli_end()
 
       invisible(self)
     },
@@ -303,10 +310,10 @@ ExTera <- R6::R6Class(
       template_library <- .catch(private$extendr$list_templates())
 
       if (!template %in% template_library) {
-        cli::cli_abort(
+        cli::cli_abort(c(
           "Template not found.",
           "i" = "See `self$list_templates()` for available templates."
-        )
+        ))
       }
 
       context <- list2(...)
@@ -349,10 +356,10 @@ ExTera <- R6::R6Class(
       template_library <- .catch(private$extendr$list_templates())
 
       if (!template %in% template_library) {
-        cli::cli_abort(
+        cli::cli_abort(c(
           "Template not found.",
           "i" = "See `self$list_templates()` for available templates."
-        )
+        ))
       }
 
       context <- list2(...)
@@ -388,6 +395,7 @@ ExTera <- R6::R6Class(
     #' Self (invisibly)
     autoescape_on = function() {
       .catch(private$extendr$autoescape_on())
+      cli::cli_alert_success("Autoescaping is now on!")
       invisible(self)
     },
 
@@ -399,6 +407,7 @@ ExTera <- R6::R6Class(
     #' Self (invisibly)
     autoescape_off = function() {
       .catch(private$extendr$autoescape_off())
+      cli::cli_alert_success("Autoescaping is now off!")
       invisible(self)
     }
   ),
