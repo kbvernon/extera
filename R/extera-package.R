@@ -1,6 +1,4 @@
 #' @import R6
-#' @import rlang
-#' @importFrom yyjsonr write_json_str
 #' @keywords internal
 "_PACKAGE"
 
