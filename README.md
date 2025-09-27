@@ -57,5 +57,6 @@ tera$render_to_string(
 The syntax and API should look pretty familiar to anyone who has used
 `glue` to do something like `glue::glue("Foo { x }", x = "bar")`. The
 big difference is the object-oriented workflow. To learn more, check out
-the [Getting started](./articles/extera.html) article on the package
-website, or call `vignette("extera")`.
+the [Getting
+started](https://kbvernon.github.io/extera/articles/extera.html) article
+on the package website, or call `vignette("extera")`.
