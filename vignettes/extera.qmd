@@ -10,10 +10,9 @@ knitr:
     comment: '#>'
 ---
 
-The `extera` package uses `extendr` to provide access to the `tera` templating 
-engine in Rust. This vignette walks through some of the basics of rendering 
-templates with tera. For more information, please see tera's official 
-documentation at <https://keats.github.io/tera/docs/>.
+This vignette walks through some of the basics of rendering templates with tera. 
+For more information, please see tera's official documentation at 
+<https://keats.github.io/tera/docs/>.
 
 ```{r}
 #| label: setup
