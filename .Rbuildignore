@@ -15,3 +15,5 @@
 [.]qmd$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^vignettes/\.quarto$
+^vignettes/*_files$

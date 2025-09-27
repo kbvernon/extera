@@ -6,7 +6,7 @@
 \alias{extera-package}
 \title{extera: Template Engine Inspired by 'tera'}
 \description{
-Template engine powered by the 'tera' 'Rust' crate and 'extendr'. Users mainly interact with an ExTera R6 object, which serves as a template library, including templates that depend on each other, a feature called in "inheritance" in tera. To render a template, users simply provide a context, or a dataset consisting of variable names and values. Template syntax supports additional logic, including built-in filters, tests, and functions, as well as loops, conditions, and inheritance. Documentation for tera can be found at \url{https://keats.github.io/tera/docs/}.
+The 'extera' package uses 'extendr' to provide access to the 'tera' templating engine in Rust. Users mainly interact with an ExTera R6 object, which serves as a template library with encapsulated methods for rendering templates. To render a template, users supply a dataset known as a context, which consists of variable names and values. Template syntax supports additional logic, including built-in filters, tests, and functions, as well as loops, conditions, and inheritance. Documentation for tera's templating syntax can be found at \url{https://keats.github.io/tera/docs/}.
 }
 \author{
 \strong{Maintainer}: Kenneth Blake Vernon \email{kenneth.b.vernon@gmail.com} (\href{https://orcid.org/0000-0003-0098-5092}{ORCID}) [copyright holder]
