@@ -27,5 +27,10 @@ Imports:
     yyjsonr
 Suggests: 
     knitr,
-    quarto
-VignetteBuilder: quarto
+    quarto,
+    rmarkdown
+URL: https://github.com/kbvernon/extera, https://kbvernon.github.io/extera/
+VignetteBuilder: quarto, knitr
+Config/Needs/website:
+    r-lib/pkgdown,
+    quarto-dev/quarto-r@libpaths
