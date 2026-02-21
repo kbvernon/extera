@@ -26,7 +26,8 @@ Imports:
     rlang (>= 1.1.0),
     yyjsonr
 Suggests: 
-    knitr
+    knitr,
+    quarto
 URL: https://github.com/kbvernon/extera, https://kbvernon.github.io/extera/
 VignetteBuilder: 
     quarto
