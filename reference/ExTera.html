@@ -21,8 +21,10 @@ feature called template &quot;inheritance&quot; in Tera."></head><body>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-      </ul><ul class="navbar-nav"></ul></div>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/extera.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/kbvernon/extera/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+      </ul></div>
 
 
   </div>
@@ -31,7 +33,7 @@ feature called template &quot;inheritance&quot; in Tera."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Tera Templating Engine</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/kbvernon/extera/blob/main/R/r6.R" class="external-link"><code>R/r6.R</code></a></small>
       <div class="d-none name"><code>ExTera.Rd</code></div>
     </div>
 
@@ -301,9 +303,7 @@ variable and value is the data to inject.</p></dd>
 <span class="r-in"><span><span class="co"># initialize ExTera with empty library</span></span></span>
 <span class="r-in"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va">ExTera</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tera</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">ExTera</span> ──</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Template library:</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># initialize ExTera from directory with glob</span></span></span>
@@ -323,9 +323,7 @@ variable and value is the data to inject.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va">ExTera</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">template_dir</span>, <span class="st">"*.html"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tera</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">ExTera</span> ──</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Template library:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> • hello-world-template.html</span>
 <span class="r-in"><span></span></span>
@@ -351,9 +349,7 @@ variable and value is the data to inject.</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tera</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">ExTera</span> ──</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Template library:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> • hello-world</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> • img-src</span>
@@ -370,12 +366,10 @@ variable and value is the data to inject.</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tera</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">ExTera</span> ──</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Template library:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • img-src</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> • hello-world</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • img-src</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `ExTera$list_templates()`</span></span></span>
@@ -389,7 +383,7 @@ variable and value is the data to inject.</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tera</span><span class="op">$</span><span class="fu">list_templates</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "img-src"     "hello-world"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "hello-world" "img-src"    </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `ExTera$render()`</span></span></span>
@@ -468,6 +462,7 @@ variable and value is the data to inject.</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tera</span><span class="op">$</span><span class="fu">autoescape_off</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Autoescaping is now off!</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tera</span><span class="op">$</span><span class="fu">render_to_string</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="st">"hello-world.html"</span>,</span></span>
@@ -486,7 +481,7 @@ variable and value is the data to inject.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
