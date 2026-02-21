@@ -25,7 +25,8 @@ Imports:
     R6,
     rlang (>= 1.1.0),
     yyjsonr
-Suggests: 
+Suggests:
+    dplyr,
     knitr,
     quarto
 URL: https://github.com/kbvernon/extera, https://kbvernon.github.io/extera/
