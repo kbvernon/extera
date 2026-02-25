@@ -70,6 +70,8 @@ new_engine <- function(dir = NULL) ExTera$new(dir)
 #'
 #' @description Print method for `ExTera` object.
 #'
+#' @usage $print(n = 10L, ...)
+#'
 #' @param n integer scalar, number of templates to print (default is 10L)
 #' @param ... ignored
 #'
@@ -111,6 +113,8 @@ ExTera$set(
 #' @name add-file-templates
 #'
 #' @description Add templates to library from file paths.
+#'
+#' @usage $add_file_templates(...)
 #'
 #' @param ... specify list of templates as key-value pairs where key is the
 #'   name of the template and value is the path to the template on file.
@@ -164,6 +168,8 @@ ExTera$set(
 #'
 #' @description Add templates to library from character strings.
 #'
+#' @usage $add_string_templates(...)
+#'
 #' @param ... specify list of templates as key-value pairs where key is the
 #'   name of the template and value is a string template.
 #'
@@ -205,6 +211,8 @@ ExTera$set(
 #'
 #' @description List current templates in library.
 #'
+#' @usage $list_templates()
+#'
 #' @return NULL (invisibly)
 #'
 #' @examples
@@ -229,6 +237,8 @@ ExTera$set(
 #' @name render
 #'
 #' @description Render specified template to file.
+#'
+#' @usage $render(template, outfile, ...)
 #'
 #' @param template character scalar, the name of the template to render.
 #' @param outfile character scalar, the path to file where template is to
@@ -307,6 +317,8 @@ ExTera$set(
 #'
 #' @param template character scalar, the name of the template to render.
 #'
+#' @usage $render_to_string(template, ...)
+#'
 #' @param ... specify context as key-value pairs where key is the template
 #'   variable and value is the data to inject.
 #'
@@ -373,6 +385,10 @@ ExTera$set(
 #'
 #' @description Turn autoescaping of HTML on or off. Autoescaping is on by
 #'   default.
+#'
+#' @usage
+#' $autoescape_on()
+#' $autoescape_off()
 #'
 #' @details Autoescaping only applies to templates whose names end with ".html",
 #'   ".htm", or ".xml".

@@ -3,6 +3,9 @@
 \name{list-templates}
 \alias{list-templates}
 \title{List Templates In Library}
+\usage{
+$list_templates()
+}
 \value{
 NULL (invisibly)
 }

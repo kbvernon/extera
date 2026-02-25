@@ -3,6 +3,9 @@
 \name{add-file-templates}
 \alias{add-file-templates}
 \title{Add Templates From Paths}
+\usage{
+$add_file_templates(...)
+}
 \arguments{
 \item{...}{specify list of templates as key-value pairs where key is the
 name of the template and value is the path to the template on file.}

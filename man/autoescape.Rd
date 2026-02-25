@@ -4,6 +4,10 @@
 \alias{autoescape-on}
 \alias{autoescape-off}
 \title{Autoescaping}
+\usage{
+$autoescape_on()
+$autoescape_off()
+}
 \value{
 Self (invisibly)
 }

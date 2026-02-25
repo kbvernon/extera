@@ -3,6 +3,9 @@
 \name{render-to-string}
 \alias{render-to-string}
 \title{Render to String}
+\usage{
+$render_to_string(template, ...)
+}
 \arguments{
 \item{template}{character scalar, the name of the template to render.}
 

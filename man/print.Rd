@@ -3,6 +3,9 @@
 \name{print}
 \alias{print}
 \title{Print ExTera}
+\usage{
+$print(n = 10L, ...)
+}
 \arguments{
 \item{n}{integer scalar, number of templates to print (default is 10L)}
 

@@ -3,6 +3,9 @@
 \name{render}
 \alias{render}
 \title{Render to File}
+\usage{
+$render(template, outfile, ...)
+}
 \arguments{
 \item{template}{character scalar, the name of the template to render.}
 

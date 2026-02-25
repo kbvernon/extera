@@ -3,6 +3,9 @@
 \name{add-string-templates}
 \alias{add-string-templates}
 \title{Add Templates From Strings}
+\usage{
+$add_string_templates(...)
+}
 \arguments{
 \item{...}{specify list of templates as key-value pairs where key is the
 name of the template and value is a string template.}
