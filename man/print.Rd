@@ -3,9 +3,6 @@
 \name{print}
 \alias{print}
 \title{Print ExTera}
-\usage{
-$print(n = 10L, ...)
-}
 \arguments{
 \item{n}{integer scalar, number of templates to print (default is 10L)}
 
@@ -15,5 +12,7 @@ $print(n = 10L, ...)
 Self (invisibly)
 }
 \description{
-Print method for \code{ExTera} object.
+R6 method for \code{ExTera}: print \code{ExTera} object.
+
+\preformatted{$print(n = 10L, ...)}
 }

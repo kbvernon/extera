@@ -3,14 +3,13 @@
 \name{list-templates}
 \alias{list-templates}
 \title{List Templates In Library}
-\usage{
-$list_templates()
-}
 \value{
-NULL (invisibly)
+a \code{character} vector of template names
 }
 \description{
-List current templates in library.
+R6 method for \code{ExTera}: list current templates in library.
+
+\preformatted{$list_templates()}
 }
 \examples{
 tera <- new_engine()

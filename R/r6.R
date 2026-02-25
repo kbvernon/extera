@@ -12,6 +12,147 @@ ExTera <- R6::R6Class(
       }
 
       invisible(self)
+    },
+    print = function(n = 10L, ...) {
+      check_number_whole(n)
+
+      template_library <- .catch(private$extendr$list_templates())
+      template_library <- sort(template_library)
+
+      if (length(template_library) > n) {
+        overflow <- sprintf(
+          "... (%s additional templates)",
+          length(template_library) - n
+        )
+
+        template_library <- c(template_library[seq_len(n)], overflow)
+      }
+
+      remove_vertical_space <- list(
+        h2 = list("margin-top" = 0, "margin-bottom" = 0)
+      )
+
+      cli::cli_div(theme = remove_vertical_space)
+      cli::cli_h2("ExTera")
+      cli::cli_text("Template library:")
+      cli::cli_ul(template_library)
+      cli::cli_end()
+
+      invisible(self)
+    },
+    add_file_templates = function(...) {
+      templates <- rlang::list2(...)
+      check_list_named(templates)
+      check_files_exist(templates)
+
+      added_templates <- .catch(
+        private$extendr$add_file_templates(templates)
+      )
+
+      if (!added_templates) {
+        cli::cli_abort("Failed to add templates to engine.")
+      }
+
+      invisible(self)
+    },
+    add_string_templates = function(...) {
+      templates <- rlang::list2(...)
+      check_list_named(templates)
+
+      added_templates <- .catch(
+        private$extendr$add_string_templates(templates)
+      )
+
+      if (!added_templates) {
+        cli::cli_abort("Failed to add templates to engine.")
+      }
+
+      invisible(self)
+    },
+    list_templates = function() {
+      .catch(private$extendr$list_templates())
+    },
+    render = function(template, outfile, ...) {
+      check_string(template)
+      check_string(outfile)
+
+      template_library <- .catch(private$extendr$list_templates())
+
+      if (!template %in% template_library) {
+        cli::cli_abort(c(
+          "Template not found.",
+          "i" = "See `self$list_templates()` for available templates."
+        ))
+      }
+
+      context <- rlang::list2(...)
+      check_list_named(context)
+
+      context_string <- yyjsonr::write_json_str(
+        context,
+        auto_unbox = TRUE
+      )
+
+      rendered_to_file <- .catch(
+        private$extendr$render_to_file(
+          template,
+          context_string,
+          outfile
+        )
+      )
+
+      check_bool(rendered_to_file)
+
+      if (!rendered_to_file) {
+        cli::cli_abort("Failed to render template to file.")
+      }
+
+      invisible(outfile)
+    },
+    render_to_string = function(template, ...) {
+      check_string(template)
+
+      template_library <- .catch(private$extendr$list_templates())
+
+      if (!template %in% template_library) {
+        cli::cli_abort(c(
+          "Template not found.",
+          "i" = "See `self$list_templates()` for available templates."
+        ))
+      }
+
+      context <- rlang::list2(...)
+      check_list_named(context)
+
+      context_string <- yyjsonr::write_json_str(
+        context,
+        auto_unbox = TRUE
+      )
+
+      rendered_string <- .catch(
+        private$extendr$render_to_string(
+          template,
+          context_string
+        )
+      )
+
+      check_string(rendered_string)
+
+      if (rendered_string == "") {
+        cli::cli_warn("Rendering returned an empty string.")
+      }
+
+      rendered_string
+    },
+    autoescape_on = function() {
+      .catch(private$extendr$autoescape_on())
+      cli::cli_alert_success("Autoescaping is now on!")
+      invisible(self)
+    },
+    autoescape_off = function() {
+      .catch(private$extendr$autoescape_off())
+      cli::cli_alert_success("Autoescaping is now off!")
+      invisible(self)
     }
   ),
   private = list(
@@ -25,11 +166,15 @@ ExTera <- R6::R6Class(
 #' @description Create a new `ExTera` object. Will populate template library
 #'   with files in `dir` if specified.
 #'
+#' \preformatted{new_engine(dir = NULL)}
+#'
+#' @usage NULL
+#'
 #' @param dir character scalar, a glob pattern with `*` wildcards indicating
 #'   a potentially nested directory containing multiple file templates. If
 #'   `NULL` (the default), an `ExTera` with an empty library is initialized.
 #'   See details for more information.
-#'pkgdown::build_site(quiet = FALSE)
+#'
 #' @return an `ExTera` R6 object.
 #'
 #' @details The glob pattern `templates/*.html` will match all files with the
@@ -68,53 +213,24 @@ new_engine <- function(dir = NULL) ExTera$new(dir)
 #'
 #' @name print
 #'
-#' @description Print method for `ExTera` object.
+#' @description R6 method for `ExTera`: print `ExTera` object.
 #'
-#' @usage $print(n = 10L, ...)
+#' \preformatted{$print(n = 10L, ...)}
 #'
 #' @param n integer scalar, number of templates to print (default is 10L)
 #' @param ... ignored
 #'
 #' @return Self (invisibly)
-ExTera$set(
-  "public",
-  name = "print",
-  value = function(n = 10L, ...) {
-    check_number_whole(n)
-
-    template_library <- .catch(private$extendr$list_templates())
-    template_library <- sort(template_library)
-
-    if (length(template_library) > n) {
-      overflow <- sprintf(
-        "... (%s additional templates)",
-        length(template_library) - n
-      )
-
-      template_library <- c(template_library[seq_len(n)], overflow)
-    }
-
-    remove_vertical_space <- list(
-      h2 = list("margin-top" = 0, "margin-bottom" = 0)
-    )
-
-    cli::cli_div(theme = remove_vertical_space)
-    cli::cli_h2("ExTera")
-    cli::cli_text("Template library:")
-    cli::cli_ul(template_library)
-    cli::cli_end()
-
-    invisible(self)
-  }
-)
+NULL
 
 #' Add Templates From Paths
 #'
 #' @name add-file-templates
 #'
-#' @description Add templates to library from file paths.
+#' @description R6 method for `ExTera`: add templates to library from file
+#'   paths.
 #'
-#' @usage $add_file_templates(...)
+#' \preformatted{$add_file_templates(...)}
 #'
 #' @param ... specify list of templates as key-value pairs where key is the
 #'   name of the template and value is the path to the template on file.
@@ -142,33 +258,16 @@ ExTera$set(
 #' )
 #'
 #' tera
-ExTera$set(
-  "public",
-  name = "add_file_templates",
-  value = function(...) {
-    templates <- rlang::list2(...)
-    check_list_named(templates)
-    check_files_exist(templates)
-
-    added_templates <- .catch(
-      private$extendr$add_file_templates(templates)
-    )
-
-    if (!added_templates) {
-      cli::cli_abort("Failed to add templates to engine.")
-    }
-
-    invisible(self)
-  }
-)
+NULL
 
 #' Add Templates From Strings
 #'
 #' @name add-string-templates
 #'
-#' @description Add templates to library from character strings.
+#' @description R6 method for `ExTera`: add templates to library from character
+#'   strings.
 #'
-#' @usage $add_string_templates(...)
+#' \preformatted{$add_string_templates(...)}
 #'
 #' @param ... specify list of templates as key-value pairs where key is the
 #'   name of the template and value is a string template.
@@ -186,34 +285,17 @@ ExTera$set(
 #' )
 #'
 #' tera
-ExTera$set(
-  "public",
-  name = "add_string_templates",
-  value = function(...) {
-    templates <- rlang::list2(...)
-    check_list_named(templates)
-
-    added_templates <- .catch(
-      private$extendr$add_string_templates(templates)
-    )
-
-    if (!added_templates) {
-      cli::cli_abort("Failed to add templates to engine.")
-    }
-
-    invisible(self)
-  }
-)
+NULL
 
 #' List Templates In Library
 #'
 #' @name list-templates
 #'
-#' @description List current templates in library.
+#' @description R6 method for `ExTera`: list current templates in library.
 #'
-#' @usage $list_templates()
+#' \preformatted{$list_templates()}
 #'
-#' @return NULL (invisibly)
+#' @return a `character` vector of template names
 #'
 #' @examples
 #' tera <- new_engine()
@@ -224,21 +306,15 @@ ExTera$set(
 #' )
 #'
 #' tera$list_templates()
-ExTera$set(
-  "public",
-  name = "list_templates",
-  value = function() {
-    .catch(private$extendr$list_templates())
-  }
-)
+NULL
 
 #' Render to File
 #'
 #' @name render
 #'
-#' @description Render specified template to file.
+#' @description R6 method for `ExTera`: render specified template to file.
 #'
-#' @usage $render(template, outfile, ...)
+#' \preformatted{$render(template, outfile, ...)}
 #'
 #' @param template character scalar, the name of the template to render.
 #' @param outfile character scalar, the path to file where template is to
@@ -267,57 +343,17 @@ ExTera$set(
 #' )
 #'
 #' readLines(outfile, warn = FALSE)
-ExTera$set(
-  "public",
-  name = "render",
-  value = function(template, outfile, ...) {
-    check_string(template)
-    check_string(outfile)
-
-    template_library <- .catch(private$extendr$list_templates())
-
-    if (!template %in% template_library) {
-      cli::cli_abort(c(
-        "Template not found.",
-        "i" = "See `self$list_templates()` for available templates."
-      ))
-    }
-
-    context <- rlang::list2(...)
-    check_list_named(context)
-
-    context_string <- yyjsonr::write_json_str(
-      context,
-      auto_unbox = TRUE
-    )
-
-    rendered_to_file <- .catch(
-      private$extendr$render_to_file(
-        template,
-        context_string,
-        outfile
-      )
-    )
-
-    check_bool(rendered_to_file)
-
-    if (!rendered_to_file) {
-      cli::cli_abort("Failed to render template to file.")
-    }
-
-    invisible(outfile)
-  }
-)
+NULL
 
 #' Render to String
 #'
 #' @name render-to-string
 #'
-#' @description Render specified template to string.
+#' @description R6 method for `ExTera`: render specified template to string.
+#'
+#' \preformatted{$render_to_string(template, ...)}
 #'
 #' @param template character scalar, the name of the template to render.
-#'
-#' @usage $render_to_string(template, ...)
 #'
 #' @param ... specify context as key-value pairs where key is the template
 #'   variable and value is the data to inject.
@@ -338,57 +374,19 @@ ExTera$set(
 #'   x = "world",
 #'   y = "ExTera"
 #' )
-ExTera$set(
-  "public",
-  name = "render_to_string",
-  value = function(template, ...) {
-    check_string(template)
-
-    template_library <- .catch(private$extendr$list_templates())
-
-    if (!template %in% template_library) {
-      cli::cli_abort(c(
-        "Template not found.",
-        "i" = "See `self$list_templates()` for available templates."
-      ))
-    }
-
-    context <- rlang::list2(...)
-    check_list_named(context)
-
-    context_string <- yyjsonr::write_json_str(
-      context,
-      auto_unbox = TRUE
-    )
-
-    rendered_string <- .catch(
-      private$extendr$render_to_string(
-        template,
-        context_string
-      )
-    )
-
-    check_string(rendered_string)
-
-    if (rendered_string == "") {
-      cli::cli_warn("Rendering returned an empty string.")
-    }
-
-    rendered_string
-  }
-)
+NULL
 
 #' Autoescaping
 #'
-#' @name autoescape-on
-#' @rdname autoescape
+#' @name autoescape
 #'
-#' @description Turn autoescaping of HTML on or off. Autoescaping is on by
-#'   default.
+#' @description R6 method for `ExTera`: turn autoescaping of HTML on or off.
+#'   Autoescaping is on by default.
 #'
-#' @usage
-#' $autoescape_on()
-#' $autoescape_off()
+#' \preformatted{
+#'   $autoescape_on()
+#'   $autoescape_off()
+#' }
 #'
 #' @details Autoescaping only applies to templates whose names end with ".html",
 #'   ".htm", or ".xml".
@@ -425,24 +423,4 @@ ExTera$set(
 #'   x = "&world",
 #'   y = "an apostrophe, '"
 #' )
-ExTera$set(
-  "public",
-  name = "autoescape_on",
-  value = function() {
-    .catch(private$extendr$autoescape_on())
-    cli::cli_alert_success("Autoescaping is now on!")
-    invisible(self)
-  }
-)
-
-#' @name autoescape-off
-#' @rdname autoescape
-ExTera$set(
-  "public",
-  name = "autoescape_off",
-  value = function() {
-    .catch(private$extendr$autoescape_off())
-    cli::cli_alert_success("Autoescaping is now off!")
-    invisible(self)
-  }
-)
+NULL

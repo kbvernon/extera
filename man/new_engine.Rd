@@ -3,15 +3,11 @@
 \name{new_engine}
 \alias{new_engine}
 \title{New Tera Templating Engine}
-\usage{
-new_engine(dir = NULL)
-}
 \arguments{
 \item{dir}{character scalar, a glob pattern with \code{*} wildcards indicating
 a potentially nested directory containing multiple file templates. If
 \code{NULL} (the default), an \code{ExTera} with an empty library is initialized.
-See details for more information.
-pkgdown::build_site(quiet = FALSE)}
+See details for more information.}
 }
 \value{
 an \code{ExTera} R6 object.
@@ -19,6 +15,8 @@ an \code{ExTera} R6 object.
 \description{
 Create a new \code{ExTera} object. Will populate template library
 with files in \code{dir} if specified.
+
+\preformatted{new_engine(dir = NULL)}
 }
 \details{
 The glob pattern \verb{templates/*.html} will match all files with the

@@ -3,9 +3,6 @@
 \name{render-to-string}
 \alias{render-to-string}
 \title{Render to String}
-\usage{
-$render_to_string(template, ...)
-}
 \arguments{
 \item{template}{character scalar, the name of the template to render.}
 
@@ -16,7 +13,9 @@ variable and value is the data to inject.}
 a single \code{character} string.
 }
 \description{
-Render specified template to string.
+R6 method for \code{ExTera}: render specified template to string.
+
+\preformatted{$render_to_string(template, ...)}
 }
 \details{
 All context elements must be named.

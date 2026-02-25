@@ -4,6 +4,10 @@
 #'   use this one-off rendering option that does not require building an
 #'   `ExTera` object.
 #'
+#' \preformatted{render_template(path, outfile = NULL, ...)}
+#'
+#' @usage NULL
+#'
 #' @param path character scalar, path to a template file
 #' @param outfile character scalar, the path to file where template is to
 #'   be rendered. If `NULL` (the default), it will render the template file to a
@@ -50,7 +54,6 @@
 #' )
 #'
 #' readLines(outfile, warn = FALSE)
-
 render_template <- function(path, outfile = NULL, ...) {
   check_string(path)
   check_files_exist(path)

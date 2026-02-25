@@ -5,3 +5,17 @@ template:
 navbar:
   structure:
     right:  [github]
+
+reference:
+  - contents:
+      - new_engine
+      - render_template
+  - title: "ExTera methods"
+    contents:
+      - print
+      - add-file-templates
+      - add-string-templates
+      - list-templates
+      - render
+      - render-to-string
+      - autoescape

@@ -3,9 +3,6 @@
 \name{render_template}
 \alias{render_template}
 \title{One-Off Template Rendering}
-\usage{
-render_template(path, outfile = NULL, ...)
-}
 \arguments{
 \item{path}{character scalar, path to a template file}
 
@@ -23,6 +20,8 @@ variable and value is the data to inject.}
 For rendering a single template file, it may be preferable to
 use this one-off rendering option that does not require building an
 \code{ExTera} object.
+
+\preformatted{render_template(path, outfile = NULL, ...)}
 }
 \details{
 Requires a path to a template file, not a template string.

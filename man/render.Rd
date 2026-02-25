@@ -3,9 +3,6 @@
 \name{render}
 \alias{render}
 \title{Render to File}
-\usage{
-$render(template, outfile, ...)
-}
 \arguments{
 \item{template}{character scalar, the name of the template to render.}
 
@@ -19,7 +16,9 @@ variable and value is the data to inject.}
 outfile (invisibly)
 }
 \description{
-Render specified template to file.
+R6 method for \code{ExTera}: render specified template to file.
+
+\preformatted{$render(template, outfile, ...)}
 }
 \details{
 All context elements must be named.

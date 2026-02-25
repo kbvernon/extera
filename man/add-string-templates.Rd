@@ -3,9 +3,6 @@
 \name{add-string-templates}
 \alias{add-string-templates}
 \title{Add Templates From Strings}
-\usage{
-$add_string_templates(...)
-}
 \arguments{
 \item{...}{specify list of templates as key-value pairs where key is the
 name of the template and value is a string template.}
@@ -14,7 +11,10 @@ name of the template and value is a string template.}
 Self (invisibly)
 }
 \description{
-Add templates to library from character strings.
+R6 method for \code{ExTera}: add templates to library from character
+strings.
+
+\preformatted{$add_string_templates(...)}
 }
 \details{
 All templates must be named.
