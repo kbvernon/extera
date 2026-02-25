@@ -1,21 +1,19 @@
 #' One-Off Template Rendering
 #'
-#' @description
-#' For rendering a single template file, it may be preferable to use this
-#' one-off rendering option.
+#' @description For rendering a single template file, it may be preferable to
+#'   use this one-off rendering option that does not require building an
+#'   `ExTera` object.
 #'
 #' @param path character scalar, path to a template file
 #' @param outfile character scalar, the path to file where template is to
-#' be rendered. If `NULL` (the default), it will render the template file to a
-#' string in the current R session.
+#'   be rendered. If `NULL` (the default), it will render the template file to a
+#'   string in the current R session.
 #' @param ... specify context as key-value pairs where key is the template
-#' variable and value is the data to inject.
+#'   variable and value is the data to inject.
 #'
-#' @return
-#' outfile (invisibly)
+#' @return `outfile`` (invisibly)
 #'
-#' @details
-#' Requires a path to a template file, not a template string.
+#' @details Requires a path to a template file, not a template string.
 #'
 #' @export
 #' @examples

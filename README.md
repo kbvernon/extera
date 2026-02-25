@@ -5,11 +5,9 @@
 # extera
 
 <!-- badges: start -->
-
 [![R-CMD-check](https://github.com/kbvernon/extera/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kbvernon/extera/actions/workflows/R-CMD-check.yaml)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/extera.png)](https://CRAN.R-project.org/package=extera)
-[![extendr](https://img.shields.io/badge/extendr-%5E0.8.0-276DC2)](https://extendr.github.io/extendr/extendr_api/)
+[![CRAN status](https://www.r-pkg.org/badges/version/extera)](https://CRAN.R-project.org/package=extera)
+[![extendr](https://img.shields.io/badge/extendr-^0.8.0-276DC2)](https://extendr.github.io/extendr/extendr_api/)
 <!-- badges: end -->
 
 The name `extera` is a portmanteau of `extendr` and `tera`, making it
@@ -35,7 +33,7 @@ world” example.
 ``` r
 library(extera)
 
-tera <- ExTera$new()
+tera <- new_engine()
 
 tera$add_string_templates(
   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'

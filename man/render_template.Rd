@@ -17,11 +17,12 @@ string in the current R session.}
 variable and value is the data to inject.}
 }
 \value{
-outfile (invisibly)
+`outfile`` (invisibly)
 }
 \description{
-For rendering a single template file, it may be preferable to use this
-one-off rendering option.
+For rendering a single template file, it may be preferable to
+use this one-off rendering option that does not require building an
+\code{ExTera} object.
 }
 \details{
 Requires a path to a template file, not a template string.

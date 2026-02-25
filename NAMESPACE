@@ -2,7 +2,7 @@
 
 S3method("$",RustExTera)
 S3method("[[",RustExTera)
-export(ExTera)
+export(new_engine)
 export(render_template)
 import(R6)
 importFrom(yyjsonr,write_json_str)

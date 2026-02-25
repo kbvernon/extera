@@ -11,6 +11,18 @@ knitr:
 ---
 
 This vignette walks through some of the basics of rendering templates with tera. 
+
+`ExTera` is an R6 class object that uses extendr to encapsulate Tera's
+templating engine. In addition to providing rendering functionality, it acts
+as a library to hold templates that may include complex dependencies, a
+feature called template "inheritance" in Tera.
+A templating engine requires two things:
+- a `template`, as you may have guessed, that includes variables and
+rendering logic describing where and how to inject data, and
+- a `context`, or a set of variables and values to be injected into the
+template.
+Templating syntax is described in the [Tera docs](https://keats.github.io/tera/docs).
+
 For more information, please see tera's official documentation at 
 <https://keats.github.io/tera/docs/>.
 
@@ -28,7 +40,7 @@ example.
 #| label: hello-world
 library(extera)
 
-tera <- ExTera$new()
+tera <- new_engine()
 
 tera$add_string_templates(
   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
@@ -51,7 +63,7 @@ the object-oriented workflow.
 
 Everything in `extera` revolves around the `ExTera` object, which serves as a 
 template library with encapsulated rendering methods. In the above example, we 
-initialize an `ExTera` with an empty template library by calling `ExTera$new()` 
+initialize an `ExTera` with an empty template library by calling `new_engine()` 
 with no arguments.
 
 If you have a complicated directory system with nested templates and inheritance 
@@ -97,7 +109,7 @@ You can generate a new `ExTera` around this directory like so
 
 ```{r}
 #| label: glob
-tera <- ExTera$new(dir = file.path(website, "**/*.html"))
+tera <- new_engine(dir = file.path(website, "**/*.html"))
 
 tera
 ```
