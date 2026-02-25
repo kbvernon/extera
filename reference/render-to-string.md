@@ -1,16 +1,12 @@
-# Render to File
+# Render to String
 
-Render specified template to file.
+Render specified template to string.
 
 ## Arguments
 
 - template:
 
   character scalar, the name of the template to render.
-
-- outfile:
-
-  character scalar, the path to file where template is to be rendered.
 
 - ...:
 
@@ -19,7 +15,7 @@ Render specified template to file.
 
 ## Value
 
-outfile (invisibly)
+a single `character` string.
 
 ## Details
 
@@ -34,15 +30,10 @@ tera$add_string_templates(
   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
 )
 
-outfile <- file.path(tempdir(), "rendered-hello-world.html")
-
-tera$render(
+tera$render_to_string(
   "hello-world",
-  outfile = outfile,
   x = "world",
   y = "ExTera"
 )
-
-readLines(outfile, warn = FALSE)
 #> [1] "<p>Hello world. This is ExTera.</p>"
 ```

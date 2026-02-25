@@ -1,8 +1,20 @@
 # extera
 
 This vignette walks through some of the basics of rendering templates
-with tera. For more information, please see tera’s official
-documentation at <https://keats.github.io/tera/docs/>.
+with tera.
+
+`ExTera` is an R6 class object that uses extendr to encapsulate Tera’s
+templating engine. In addition to providing rendering functionality, it
+acts as a library to hold templates that may include complex
+dependencies, a feature called template “inheritance” in Tera. A
+templating engine requires two things: - a `template`, as you may have
+guessed, that includes variables and rendering logic describing where
+and how to inject data, and - a `context`, or a set of variables and
+values to be injected into the template. Templating syntax is described
+in the [Tera docs](https://keats.github.io/tera/docs).
+
+For more information, please see tera’s official documentation at
+<https://keats.github.io/tera/docs/>.
 
 ``` r
 library(extera)
@@ -16,7 +28,7 @@ world” example.
 ``` r
 library(extera)
 
-tera <- ExTera$new()
+tera <- new_engine()
 
 tera$add_string_templates(
   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
@@ -44,7 +56,9 @@ big difference is the object-oriented workflow.
 Everything in `extera` revolves around the `ExTera` object, which serves
 as a template library with encapsulated rendering methods. In the above
 example, we initialize an `ExTera` with an empty template library by
-calling `ExTera$new()` with no arguments.
+calling
+[`new_engine()`](https://kbvernon.github.io/extera/reference/new_engine.md)
+with no arguments.
 
 If you have a complicated directory system with nested templates and
 inheritance patterns - a common situation for web development, you may
@@ -94,7 +108,7 @@ cat(
 You can generate a new `ExTera` around this directory like so
 
 ``` r
-tera <- ExTera$new(dir = file.path(website, "**/*.html"))
+tera <- new_engine(dir = file.path(website, "**/*.html"))
 
 tera
 #> ── ExTera ──
@@ -243,22 +257,25 @@ cat(string)
 
 In that for-loop, you may have noticed that we used dot-indexing syntax,
 e.g., `person.name`. If `person` was a list in R, this would be
-equivalent to `person[["name"]]`. This usage suggests that the context
-should have a specific format, like a named list. In fact, the `tera`
-templating engine generally expects data to be in, let’s say, a
-JSON-like format. The biggest way this affects data structures coming
-from R is in the way that data.frames are handled. In R, tables are
-column-major, but the JSON-like format that `tera` wants is row-major or
-“record” oriented.
+equivalent to `person[["name"]]`. Internally, the Rust crate `tera`
+represents all context values as `serde_json::Value`, which can hold any
+valid JSON structure. The challenge for `extera` is to bridge R objects
+to that Rust type. To handle this, `extera` takes a pragmatic approach:
+context values are serialized to a JSON string in R using the `yyjsonr`
+package and then passed across the FFI boundary as a string, which is
+then deserialized into a `serde_json::Value` on the Rust side. This is a
+round-trip through strings, but it delegates the tricky R-to-JSON
+conversion to a well-tested library. `yyjsonr` is also very fast, so the
+overhead is minor.
 
-The way `extera` handles this is by serializing all R data structures
-added to the context as JSON using `yyjsonr`. This is not ideal, but it
-is relatively safe. It also enforces a specific data model that users
-should be able to reason about fairly well. Oh, and `yyjsonr` is very,
-very fast, so performance issues are minor.
-
-It may help to see an example of what that looks like. This applies the
-same filters we used in our template above.
+There is one consequence worth knowing about: data.frames are
+column-major in R, but conversion to JSON will create row-major records.
+This affects template syntax, especially in loops like
+`for person in people`. Each `person` will be a record holding all the
+data from that row of a data.frame. For example, `person.name` will
+return the value of the `name` column for a specific row of the
+data.frame. It may help to see an example of what that looks like. This
+applies the same filters we used in our template above.
 
 ``` r
 starwars[["in_a_new_hope"]] <- sapply(

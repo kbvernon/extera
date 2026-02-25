@@ -59,7 +59,9 @@
 
 
 
-    <p>This vignette walks through some of the basics of rendering templates with tera. For more information, please see tera’s official documentation at <a href="https://keats.github.io/tera/docs/" class="external-link uri">https://keats.github.io/tera/docs/</a>.</p>
+    <p>This vignette walks through some of the basics of rendering templates with tera.</p>
+<p><code>ExTera</code> is an R6 class object that uses extendr to encapsulate Tera’s templating engine. In addition to providing rendering functionality, it acts as a library to hold templates that may include complex dependencies, a feature called template “inheritance” in Tera. A templating engine requires two things: - a <code>template</code>, as you may have guessed, that includes variables and rendering logic describing where and how to inject data, and - a <code>context</code>, or a set of variables and values to be injected into the template. Templating syntax is described in the <a href="https://keats.github.io/tera/docs" class="external-link">Tera docs</a>.</p>
+<p>For more information, please see tera’s official documentation at <a href="https://keats.github.io/tera/docs/" class="external-link uri">https://keats.github.io/tera/docs/</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kbvernon/extera" class="external-link">extera</a></span><span class="op">)</span></span></code></pre></div>
@@ -71,7 +73,7 @@
 <div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kbvernon/extera" class="external-link">extera</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ExTera.html">ExTera</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_engine.html">new_engine</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tera</span><span class="op">$</span><span class="fu">add_string_templates</span><span class="op">(</span></span>
 <span>  <span class="st">"hello-world"</span> <span class="op">=</span> <span class="st">'&lt;p&gt;Hello {{ x }}. This is {{ y }}.&lt;/p&gt;'</span></span>
@@ -93,7 +95,7 @@
 </section><section class="level2"><h2 id="initializing-extera">Initializing <code>ExTera</code>
 <a class="anchor" aria-label="anchor" href="#initializing-extera"></a>
 </h2>
-<p>Everything in <code>extera</code> revolves around the <code>ExTera</code> object, which serves as a template library with encapsulated rendering methods. In the above example, we initialize an <code>ExTera</code> with an empty template library by calling <code>ExTera$new()</code> with no arguments.</p>
+<p>Everything in <code>extera</code> revolves around the <code>ExTera</code> object, which serves as a template library with encapsulated rendering methods. In the above example, we initialize an <code>ExTera</code> with an empty template library by calling <code><a href="../reference/new_engine.html">new_engine()</a></code> with no arguments.</p>
 <p>If you have a complicated directory system with nested templates and inheritance patterns - a common situation for web development, you may find it easier to initialize an <code>ExTera</code> by specifying the directory with a glob containing the <code>*</code> wildcard to indicate any number of subfolders and template files. Suppose, for example, that you have a <code>website</code> directory that looks like this:</p>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
@@ -135,7 +137,7 @@
 <p>You can generate a new <code>ExTera</code> around this directory like so</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ExTera.html">ExTera</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">website</span>, <span class="st">"**/*.html"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_engine.html">new_engine</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">website</span>, <span class="st">"**/*.html"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tera</span></span>
 <span><span class="co">#&gt; ── ExTera ──</span></span>
@@ -264,9 +266,8 @@
 </div>
 </section><section class="level2"><h2 id="context-format">Context format<a class="anchor" aria-label="anchor" href="#context-format"></a>
 </h2>
-<p>In that for-loop, you may have noticed that we used dot-indexing syntax, e.g., <code>person.name</code>. If <code>person</code> was a list in R, this would be equivalent to <code>person[["name"]]</code>. This usage suggests that the context should have a specific format, like a named list. In fact, the <code>tera</code> templating engine generally expects data to be in, let’s say, a JSON-like format. The biggest way this affects data structures coming from R is in the way that data.frames are handled. In R, tables are column-major, but the JSON-like format that <code>tera</code> wants is row-major or “record” oriented.</p>
-<p>The way <code>extera</code> handles this is by serializing all R data structures added to the context as JSON using <code>yyjsonr</code>. This is not ideal, but it is relatively safe. It also enforces a specific data model that users should be able to reason about fairly well. Oh, and <code>yyjsonr</code> is very, very fast, so performance issues are minor.</p>
-<p>It may help to see an example of what that looks like. This applies the same filters we used in our template above.</p>
+<p>In that for-loop, you may have noticed that we used dot-indexing syntax, e.g., <code>person.name</code>. If <code>person</code> was a list in R, this would be equivalent to <code>person[["name"]]</code>. Internally, the Rust crate <code>tera</code> represents all context values as <code>serde_json::Value</code>, which can hold any valid JSON structure. The challenge for <code>extera</code> is to bridge R objects to that Rust type. To handle this, <code>extera</code> takes a pragmatic approach: context values are serialized to a JSON string in R using the <code>yyjsonr</code> package and then passed across the FFI boundary as a string, which is then deserialized into a <code>serde_json::Value</code> on the Rust side. This is a round-trip through strings, but it delegates the tricky R-to-JSON conversion to a well-tested library. <code>yyjsonr</code> is also very fast, so the overhead is minor.</p>
+<p>There is one consequence worth knowing about: data.frames are column-major in R, but conversion to JSON will create row-major records. This affects template syntax, especially in loops like <code>for person in people</code>. Each <code>person</code> will be a record holding all the data from that row of a data.frame. For example, <code>person.name</code> will return the value of the <code>name</code> column for a specific row of the data.frame. It may help to see an example of what that looks like. This applies the same filters we used in our template above.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">starwars</span><span class="op">[[</span><span class="st">"in_a_new_hope"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span></span>

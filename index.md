@@ -23,7 +23,7 @@ world” example.
 ``` r
 library(extera)
 
-tera <- ExTera$new()
+tera <- new_engine()
 
 tera$add_string_templates(
   "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'

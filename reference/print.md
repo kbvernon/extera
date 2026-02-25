@@ -1,12 +1,6 @@
-# Print an ExTera Object
+# Print ExTera
 
 Print method for `ExTera` object.
-
-## Usage
-
-``` r
-print(n = 10L, ...)
-```
 
 ## Arguments
 
@@ -21,12 +15,3 @@ print(n = 10L, ...)
 ## Value
 
 Self (invisibly)
-
-## Examples
-
-``` r
-tera <- ExTera$new()
-tera
-#> ── ExTera ──
-#> Template library:
-```
