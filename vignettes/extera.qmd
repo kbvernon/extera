@@ -208,23 +208,25 @@ cat(string)
 
 ## Context format
 
-In that for-loop, you may have noticed that we used dot-indexing syntax, e.g., 
-`person.name`. If `person` was a list in R, this would be equivalent to 
-`person[["name"]]`. This usage suggests that the context should have a specific 
-format, like a named list. In fact, the `tera` templating engine generally 
-expects data to be in, let's say, a JSON-like format. The biggest way this 
-affects data structures coming from R is in the way that data.frames are 
-handled. In R, tables are column-major, but the JSON-like format that `tera` 
-wants is row-major or "record" oriented.
+In that for-loop, you may have noticed that we used dot-indexing syntax, e.g.,
+`person.name`. If `person` was a list in R, this would be equivalent to
+`person[["name"]]`. Internally, the Rust crate `tera` represents all context 
+values as `serde_json::Value`, which can hold any valid JSON structure. The 
+challenge for `extera` is to bridge R objects to that Rust type. To handle this, 
+`extera` takes a pragmatic approach: context values are serialized to a JSON 
+string in R using the `yyjsonr` package and then passed across the FFI boundary 
+as a string, which is then deserialized into a `serde_json::Value` on the Rust 
+side. This is a round-trip through strings, but it delegates the tricky 
+R-to-JSON conversion to a well-tested library. `yyjsonr` is also very fast, so 
+the overhead is minor.
 
-The way `extera` handles this is by serializing all R data structures added to
-the context as JSON using `yyjsonr`. This is not ideal, but it is relatively 
-safe. It also enforces a specific data model that users should be able to 
-reason about fairly well. Oh, and `yyjsonr` is very, very fast, so performance 
-issues are minor.
-
-It may help to see an example of what that looks like. This applies the same 
-filters we used in our template above.
+There is one consequence worth knowing about: data.frames are column-major in R, 
+but conversion to JSON will create row-major records. This affects template 
+syntax, especially in loops like `for person in people`. Each `person` will be a
+record holding all the data from that row of a data.frame. For example, 
+`person.name` will return the value of the `name` column for a specific row of 
+the data.frame. It may help to see an example of what that looks like. This 
+applies the same filters we used in our template above.
 
 ```{r}
 #| label: yyjsonr
