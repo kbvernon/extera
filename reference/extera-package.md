@@ -10,6 +10,14 @@ functions, as well as loops, conditions, and inheritance. Documentation
 for tera's templating syntax can be found at
 <https://keats.github.io/tera/docs/>.
 
+## See also
+
+Useful links:
+
+- <https://github.com/kbvernon/extera>
+
+- <https://kbvernon.github.io/extera/>
+
 ## Author
 
 **Maintainer**: Kenneth Blake Vernon <kenneth.b.vernon@gmail.com>

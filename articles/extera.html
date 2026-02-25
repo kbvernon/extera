@@ -59,19 +59,21 @@
 
 
 
-    <p>This vignette walks through some of the basics of rendering templates with tera. For more information, please see tera’s official documentation at <a href="https://keats.github.io/tera/docs/" class="external-link uri">https://keats.github.io/tera/docs/</a>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kbvernon/extera" class="external-link">extera</a></span><span class="op">)</span></span></code></pre></div>
-</div>
+    <p>This vignette walks through some of the basics of rendering templates with tera. The core of the package is the <code>ExTera</code> R6 class object that uses extendr to encapsulate Tera’s templating engine. In addition to providing rendering functionality, it acts as a library to hold templates that may include complex dependencies, a feature called template “inheritance” in Tera.</p>
+<p>A templating engine requires two things:</p>
+<ul>
+<li>a <code>template</code>, as you may have guessed, that includes variables and rendering logic describing where and how to inject data, and</li>
+<li>a <code>context</code>, or a set of variables and values to be injected into the template.</li>
+</ul>
+<p>Templating syntax is described in the <a href="https://keats.github.io/tera/docs" class="external-link">Tera docs</a>.</p>
 <section class="level2"><h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <p>To get a feel for what <code>extera</code> can do, let’s start with a simple “hello world” example.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kbvernon/extera" class="external-link">extera</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ExTera.html">ExTera</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va">ExTera</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tera</span><span class="op">$</span><span class="fu">add_string_templates</span><span class="op">(</span></span>
 <span>  <span class="st">"hello-world"</span> <span class="op">=</span> <span class="st">'&lt;p&gt;Hello {{ x }}. This is {{ y }}.&lt;/p&gt;'</span></span>
@@ -96,7 +98,7 @@
 <p>Everything in <code>extera</code> revolves around the <code>ExTera</code> object, which serves as a template library with encapsulated rendering methods. In the above example, we initialize an <code>ExTera</code> with an empty template library by calling <code>ExTera$new()</code> with no arguments.</p>
 <p>If you have a complicated directory system with nested templates and inheritance patterns - a common situation for web development, you may find it easier to initialize an <code>ExTera</code> by specifying the directory with a glob containing the <code>*</code> wildcard to indicate any number of subfolders and template files. Suppose, for example, that you have a <code>website</code> directory that looks like this:</p>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">website</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"website"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">website</span><span class="op">)</span></span>
@@ -134,8 +136,8 @@
 </div>
 <p>You can generate a new <code>ExTera</code> around this directory like so</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ExTera.html">ExTera</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">website</span>, <span class="st">"**/*.html"</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="va">ExTera</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">website</span>, <span class="st">"**/*.html"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tera</span></span>
 <span><span class="co">#&gt; ── ExTera ──</span></span>
@@ -155,7 +157,7 @@
 </ul>
 <p>Consider our hypothetical website’s blog post template:</p>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">website</span>, <span class="st">"posts"</span>, <span class="st">"blog-template.html"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span>sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
@@ -168,7 +170,7 @@
 </div>
 <p>Here are the two ways to render this template.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># render to file</span></span>
 <span><span class="va">outfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"rendered-blog-post.html"</span><span class="op">)</span></span>
 <span></span>
@@ -203,7 +205,7 @@
 </div>
 <p>Did you notice that the apostrophe was converted into the html character entity <code>&amp;#x27;</code>? This is an example of escaping, which <code>tera</code> does by default. You can turn off this behavior using <code>self$autoescape_off()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tera</span><span class="op">$</span><span class="fu">autoescape_off</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ✔ Autoescaping is now off!</span></span>
 <span></span>
@@ -224,7 +226,7 @@
 </h2>
 <p>The <code>tera</code> templating engine offers a lot of additional functionality, like control flow and data manipulation. The following example shows how to construct a for-loop, add conditional statements, and apply built-in functions. Notice that <code>{% expression %}</code> is used to signal these expressions in the template. The use of dashes tells the renderer to remove white space before (<code>{%- expression %}</code>) or after (<code>{% expression -%}</code>) the expression.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tera</span><span class="op">$</span><span class="fu">add_string_templates</span><span class="op">(</span></span>
 <span>  <span class="st">"star-wars"</span> <span class="op">=</span> <span class="st">'&lt;h2&gt;{{ title }}&lt;/h2&gt;</span></span>
 <span><span class="st">&lt;ol&gt;</span></span>
@@ -268,7 +270,7 @@
 <p>The way <code>extera</code> handles this is by serializing all R data structures added to the context as JSON using <code>yyjsonr</code>. This is not ideal, but it is relatively safe. It also enforces a specific data model that users should be able to reason about fairly well. Oh, and <code>yyjsonr</code> is very, very fast, so performance issues are minor.</p>
 <p>It may help to see an example of what that looks like. This applies the same filters we used in our template above.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">starwars</span><span class="op">[[</span><span class="st">"in_a_new_hope"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span></span>
 <span>  <span class="va">starwars</span><span class="op">[[</span><span class="st">"films"</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="st">"A New Hope"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">x</span></span>
@@ -344,7 +346,7 @@
 </h2>
 <p>Templates can inherit content from each other in one of two ways, either using <code>include</code> or, for more complicated inheritance, <code>extends</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tera</span><span class="op">$</span><span class="fu">add_string_templates</span><span class="op">(</span></span>
 <span>  <span class="st">"index.html"</span> <span class="op">=</span> <span class="st">'&lt;p&gt;Hello {{ x }}. This is {{ y }}.&lt;/p&gt;</span></span>
 <span><span class="st">&lt;div&gt;</span></span>
@@ -371,7 +373,7 @@
 </div>
 <p>The extension mechanism is a little more involved, requiring that you specify content blocks where content from a child document should be injected. In the following example, we define a single block called <code>content</code> in the base or parent template and specify what it includes in the child template.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">base_html</span> <span class="op">&lt;-</span> <span class="st">'&lt;body&gt;</span></span>
 <span><span class="st">  &lt;div id="content"&gt;</span></span>
 <span><span class="st">    {% block content %}</span></span>
