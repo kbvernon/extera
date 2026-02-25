@@ -1,8 +1,6 @@
 # Add Templates From Paths
 
-Add templates to library from file paths.
-
-## Usage
+R6 method for `ExTera`: add templates to library from file paths.
 
     $add_file_templates(...)
 

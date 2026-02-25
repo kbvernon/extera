@@ -1,8 +1,6 @@
 # Add Templates From Strings
 
-Add templates to library from character strings.
-
-## Usage
+R6 method for `ExTera`: add templates to library from character strings.
 
     $add_string_templates(...)
 

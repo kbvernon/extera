@@ -3,11 +3,7 @@
 Create a new `ExTera` object. Will populate template library with files
 in `dir` if specified.
 
-## Usage
-
-``` r
-new_engine(dir = NULL)
-```
+    new_engine(dir = NULL)
 
 ## Arguments
 
@@ -17,7 +13,6 @@ new_engine(dir = NULL)
   potentially nested directory containing multiple file templates. If
   `NULL` (the default), an `ExTera` with an empty library is
   initialized. See details for more information.
-  pkgdown::build_site(quiet = FALSE)
 
 ## Value
 

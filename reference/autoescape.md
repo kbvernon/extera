@@ -1,11 +1,10 @@
 # Autoescaping
 
-Turn autoescaping of HTML on or off. Autoescaping is on by default.
+R6 method for `ExTera`: turn autoescaping of HTML on or off.
+Autoescaping is on by default.
 
-## Usage
-
-    $autoescape_on()
-    $autoescape_off()
+      $autoescape_on()
+      $autoescape_off()
 
 ## Value
 

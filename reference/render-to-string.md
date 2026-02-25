@@ -1,8 +1,6 @@
 # Render to String
 
-Render specified template to string.
-
-## Usage
+R6 method for `ExTera`: render specified template to string.
 
     $render_to_string(template, ...)
 

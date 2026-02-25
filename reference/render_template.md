@@ -4,11 +4,7 @@ For rendering a single template file, it may be preferable to use this
 one-off rendering option that does not require building an `ExTera`
 object.
 
-## Usage
-
-``` r
-render_template(path, outfile = NULL, ...)
-```
+    render_template(path, outfile = NULL, ...)
 
 ## Arguments
 

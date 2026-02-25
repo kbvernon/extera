@@ -1,20 +1,20 @@
 # extera
 
 This vignette walks through some of the basics of rendering templates
-with tera.
+with tera. `ExTera` is an R6 class object that uses extendr to
+encapsulate Tera’s templating engine. In addition to providing rendering
+functionality, it acts as a library to hold templates that may include
+complex dependencies, a feature called template “inheritance” in Tera.
 
-`ExTera` is an R6 class object that uses extendr to encapsulate Tera’s
-templating engine. In addition to providing rendering functionality, it
-acts as a library to hold templates that may include complex
-dependencies, a feature called template “inheritance” in Tera. A
-templating engine requires two things: - a `template`, as you may have
-guessed, that includes variables and rendering logic describing where
-and how to inject data, and - a `context`, or a set of variables and
-values to be injected into the template. Templating syntax is described
-in the [Tera docs](https://keats.github.io/tera/docs).
+A templating engine requires two things:
 
-For more information, please see tera’s official documentation at
-<https://keats.github.io/tera/docs/>.
+- a `template`, as you may have guessed, that includes variables and
+  rendering logic describing where and how to inject data, and
+- a `context`, or a set of variables and values to be injected into the
+  template.
+
+Templating syntax is described in the [Tera
+docs](https://keats.github.io/tera/docs).
 
 ``` r
 library(extera)
@@ -109,7 +109,6 @@ You can generate a new `ExTera` around this directory like so
 
 ``` r
 tera <- new_engine(dir = file.path(website, "**/*.html"))
-
 tera
 #> ── ExTera ──
 #> Template library:

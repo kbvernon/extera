@@ -1,8 +1,6 @@
 # Print ExTera
 
-Print method for `ExTera` object.
-
-## Usage
+R6 method for `ExTera`: print `ExTera` object.
 
     $print(n = 10L, ...)
 

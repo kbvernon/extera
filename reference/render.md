@@ -1,8 +1,6 @@
 # Render to File
 
-Render specified template to file.
-
-## Usage
+R6 method for `ExTera`: render specified template to file.
 
     $render(template, outfile, ...)
 

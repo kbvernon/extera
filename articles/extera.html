@@ -59,9 +59,13 @@
 
 
 
-    <p>This vignette walks through some of the basics of rendering templates with tera.</p>
-<p><code>ExTera</code> is an R6 class object that uses extendr to encapsulate Tera’s templating engine. In addition to providing rendering functionality, it acts as a library to hold templates that may include complex dependencies, a feature called template “inheritance” in Tera. A templating engine requires two things: - a <code>template</code>, as you may have guessed, that includes variables and rendering logic describing where and how to inject data, and - a <code>context</code>, or a set of variables and values to be injected into the template. Templating syntax is described in the <a href="https://keats.github.io/tera/docs" class="external-link">Tera docs</a>.</p>
-<p>For more information, please see tera’s official documentation at <a href="https://keats.github.io/tera/docs/" class="external-link uri">https://keats.github.io/tera/docs/</a>.</p>
+    <p>This vignette walks through some of the basics of rendering templates with tera. <code>ExTera</code> is an R6 class object that uses extendr to encapsulate Tera’s templating engine. In addition to providing rendering functionality, it acts as a library to hold templates that may include complex dependencies, a feature called template “inheritance” in Tera.</p>
+<p>A templating engine requires two things:</p>
+<ul>
+<li>a <code>template</code>, as you may have guessed, that includes variables and rendering logic describing where and how to inject data, and</li>
+<li>a <code>context</code>, or a set of variables and values to be injected into the template.</li>
+</ul>
+<p>Templating syntax is described in the <a href="https://keats.github.io/tera/docs" class="external-link">Tera docs</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kbvernon/extera" class="external-link">extera</a></span><span class="op">)</span></span></code></pre></div>
@@ -138,7 +142,6 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tera</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_engine.html">new_engine</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">website</span>, <span class="st">"**/*.html"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">tera</span></span>
 <span><span class="co">#&gt; ── ExTera ──</span></span>
 <span><span class="co">#&gt; Template library:</span></span>

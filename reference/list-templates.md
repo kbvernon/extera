@@ -1,14 +1,12 @@
 # List Templates In Library
 
-List current templates in library.
-
-## Usage
+R6 method for `ExTera`: list current templates in library.
 
     $list_templates()
 
 ## Value
 
-NULL (invisibly)
+a `character` vector of template names
 
 ## Examples
 
@@ -21,5 +19,5 @@ tera$add_string_templates(
 )
 
 tera$list_templates()
-#> [1] "hello-world" "img-src"    
+#> [1] "img-src"     "hello-world"
 ```
