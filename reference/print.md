@@ -17,3 +17,19 @@ R6 method for `ExTera`: print `ExTera` object.
 ## Value
 
 Self (invisibly)
+
+## Examples
+
+``` r
+tera <- new_engine()
+
+# call it directly
+tera$print()
+#> ── ExTera ──
+#> Template library:
+
+# or just let R handle it
+tera
+#> ── ExTera ──
+#> Template library:
+```
