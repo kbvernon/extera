@@ -8,6 +8,14 @@
 \description{
 The 'extera' package uses 'extendr' to provide access to the 'tera' templating engine in Rust. Users mainly interact with an ExTera R6 object, which serves as a template library with encapsulated methods for rendering templates. To render a template, users supply a dataset known as a context, which consists of variable names and values. Template syntax supports additional logic, including built-in filters, tests, and functions, as well as loops, conditions, and inheritance. Documentation for tera's templating syntax can be found at \url{https://keats.github.io/tera/docs/}.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/kbvernon/extera}
+  \item \url{https://kbvernon.github.io/extera/}
+}
+
+}
 \author{
 \strong{Maintainer}: Kenneth Blake Vernon \email{kenneth.b.vernon@gmail.com} (\href{https://orcid.org/0000-0003-0098-5092}{ORCID}) [copyright holder]
 
