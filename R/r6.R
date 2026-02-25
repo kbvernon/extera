@@ -221,6 +221,15 @@ new_engine <- function(dir = NULL) ExTera$new(dir)
 #' @param ... ignored
 #'
 #' @return Self (invisibly)
+#'
+#' @examples
+#' tera <- new_engine()
+#'
+#' # call it directly
+#' tera$print()
+#'
+#' # or just let R handle it
+#' tera
 NULL
 
 #' Add Templates From Paths

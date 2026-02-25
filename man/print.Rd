@@ -16,3 +16,12 @@ R6 method for \code{ExTera}: print \code{ExTera} object.
 
 \preformatted{$print(n = 10L, ...)}
 }
+\examples{
+tera <- new_engine()
+
+# call it directly
+tera$print()
+
+# or just let R handle it
+tera
+}
