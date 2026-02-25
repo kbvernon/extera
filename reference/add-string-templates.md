@@ -2,6 +2,10 @@
 
 Add templates to library from character strings.
 
+## Usage
+
+    $add_string_templates(...)
+
 ## Arguments
 
 - ...:

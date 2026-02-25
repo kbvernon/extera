@@ -2,6 +2,10 @@
 
 Print method for `ExTera` object.
 
+## Usage
+
+    $print(n = 10L, ...)
+
 ## Arguments
 
 - n:

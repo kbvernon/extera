@@ -2,6 +2,11 @@
 
 Turn autoescaping of HTML on or off. Autoescaping is on by default.
 
+## Usage
+
+    $autoescape_on()
+    $autoescape_off()
+
 ## Value
 
 Self (invisibly)

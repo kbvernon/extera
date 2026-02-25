@@ -2,6 +2,10 @@
 
 Add templates to library from file paths.
 
+## Usage
+
+    $add_file_templates(...)
+
 ## Arguments
 
 - ...:

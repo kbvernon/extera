@@ -2,6 +2,10 @@
 
 Render specified template to file.
 
+## Usage
+
+    $render(template, outfile, ...)
+
 ## Arguments
 
 - template:

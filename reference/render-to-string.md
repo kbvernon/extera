@@ -2,6 +2,10 @@
 
 Render specified template to string.
 
+## Usage
+
+    $render_to_string(template, ...)
+
 ## Arguments
 
 - template:

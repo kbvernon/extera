@@ -2,6 +2,10 @@
 
 List current templates in library.
 
+## Usage
+
+    $list_templates()
+
 ## Value
 
 NULL (invisibly)
@@ -17,5 +21,5 @@ tera$add_string_templates(
 )
 
 tera$list_templates()
-#> [1] "img-src"     "hello-world"
+#> [1] "hello-world" "img-src"    
 ```
